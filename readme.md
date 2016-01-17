@@ -1,11 +1,10 @@
 # Laravel CDN Assets Manager
 
-[![Total Downloads](https://poser.pugx.org/vinelab/cdn/downloads)](https://packagist.org/packages/vinelab/cdn) 
-[![Latest Stable Version](https://poser.pugx.org/vinelab/cdn/v/stable)](https://packagist.org/packages/vinelab/cdn) 
-[![Latest Unstable Version](https://poser.pugx.org/vinelab/cdn/v/unstable)](https://packagist.org/packages/vinelab/cdn) 
-[![Build Status](https://travis-ci.org/Vinelab/cdn.svg)](https://travis-ci.org/Vinelab/cdn)
+[![Latest Stable Version](https://poser.pugx.org/publiux/laravelcdn/v/stable)](https://packagist.org/packages/publiux/laravelcdn)
+[![Total Downloads](https://poser.pugx.org/publiux/laravelcdn/downloads)](https://packagist.org/packages/publiux/laravelcdn)
+[![Build Status](https://travis-ci.org/publiux/laravelcdn.svg)](https://travis-ci.org/publiux/laravelcdn)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Vinelab/cdn/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Vinelab/cdn/?branch=master)
-[![License](https://poser.pugx.org/vinelab/cdn/license)](https://packagist.org/packages/vinelab/cdn)
+[![License](https://poser.pugx.org/publiux/laravelcdn/license)](https://packagist.org/packages/publiux/laravelcdn)
 
 
 ##### Content Delivery Network Package for Laravel
@@ -14,8 +13,7 @@ The package provides the developer the ability to upload his assets (or any publ
 And then it allows him to switch between the local and the online version of the files.
 
 #### Laravel Support
-- For Laravel 5.1 use the latest realease (`master`).
-- For Laravel 4.2 use the realease `v1.0.1` [Last suport for L 4.2](https://github.com/Vinelab/cdn/releases/tag/v1.0.1)
+- For Laravel 5.2 and above use the latest realease (`master`).
 
 ## Highlights
 
@@ -34,10 +32,10 @@ And then it allows him to switch between the local and the online version of the
 
 #### Via Composer
 
-Require `vinelab/cdn` in your project:
+Require `publiux/laravelcdn` in your project:
 
 ```bash 
-composer require vinelab/cdn:*
+composer require publiux/laravelcdn:*
 ```
 
 *Since this is a Laravel package we need to register the service provider:*
@@ -47,7 +45,7 @@ Add the service provider to `config/app.php`:
 ```php
 'providers' => array(
      //...
-     Vinelab\Cdn\CdnServiceProvider::class,
+     Publiux\laravelcdn\CdnServiceProvider::class,
 ),
 ```
 
@@ -65,7 +63,7 @@ AWS_SECRET_ACCESS_KEY=
 Publish the package config file:
 
 ```bash
-php artisan vendor:publish vinelab/cdn
+php artisan vendor:publish publiux/laravelcdn
 ```
 
 You can find it at `config/cdn.php`
@@ -206,16 +204,6 @@ To use a file from outside the `public/` directory, anywhere in `app/` use the `
 ```
 
 
-
-
-
-
-
-
-
-
-
-
 ## Test
 
 To run the tests, run the following command from the project folder.
@@ -226,25 +214,23 @@ $ ./vendor/bin/phpunit
 
 ## Support
 
-[On Github](https://github.com/Vinelab/cdn/issues)
+[On Github](https://github.com/publiux/laravelcdn/issues)
 
 
 ## Contributing
 
-Please see [CONTRIBUTING](https://github.com/Vinelab/cdn/blob/master/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](https://github.com/publiux/laravelcdn/blob/master/CONTRIBUTING.md) for details.
 
-## Security
+## Security Related Issues
 
-If you discover any security related issues, please email mahmoud@vinelab.com instead of using the issue tracker.
+If you discover any security related issues, please email publiux@gmail.com instead of using the issue tracker for faster response. You should open an issue at the same time.
 
 ## Credits
-
-- [Mahmoud Zalt](https://github.com/Mahmoudz)
+- [Raul Ruiz](https://github.com/publiux) (forker)
+- [Mahmoud Zalt](https://github.com/Mahmoudz) (original developer)
 - [All Contributors](../../contributors)
 
 
 ## License
 
-The MIT License (MIT). Please see [License File](https://github.com/Vinelab/cdn/blob/master/LICENSE) for more information.
-
-
+The MIT License (MIT). Please see [License File](https://github.com/publiux/laravelcdn/blob/master/LICENSE) for more information.
