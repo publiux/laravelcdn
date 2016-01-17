@@ -228,7 +228,9 @@ If you discover any security related issues, please email publiux@gmail.com inst
 ## Credits
 - [Raul Ruiz](https://github.com/publiux) (forker)
 - [Mahmoud Zalt](https://github.com/Mahmoudz) (original developer)
-- [All Contributors](../../contributors)
+- [Filipe Garcia](https://github.com/filipegar) (contributred pre-fork, uncredited pull request for duplicate uploading verification)
+- [Contributors from original project](https://github.com/Vinelab/cdn/graphs/contributors)
+- [All Contributors for this Fork](../../contributors)
 
 
 ## License
