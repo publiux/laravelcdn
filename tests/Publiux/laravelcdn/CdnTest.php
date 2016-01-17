@@ -1,19 +1,19 @@
 <?php
+
 namespace Publiux\laravelcdn\Tests;
 
 use Illuminate\Support\Collection;
 use Mockery as M;
 
 /**
- * Class CdnTest
+ * Class CdnTest.
  *
  * @category Test
- * @package Publiux\laravelcdn\Tests
+ *
  * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class CdnTest extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -38,13 +38,13 @@ class CdnTest extends TestCase
 
         $this->m_asset->shouldReceive('getAssets')
             ->once()
-            ->andReturn(New Collection());
+            ->andReturn(new Collection());
 
         $this->m_finder = M::mock('Publiux\laravelcdn\Contracts\FinderInterface');
         $this->m_finder->shouldReceive('read')
             ->with($this->m_asset)
             ->once()
-            ->andReturn(New Collection());
+            ->andReturn(new Collection());
 
         $this->m_provider = M::mock('Publiux\laravelcdn\Providers\Provider');
         $this->m_provider->shouldReceive('upload')
@@ -73,7 +73,7 @@ class CdnTest extends TestCase
     }
 
     /**
-     * Integration Test
+     * Integration Test.
      */
     public function testPushCommand()
     {
@@ -85,8 +85,8 @@ class CdnTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'region'  => 'us-standard',
-                        'version' => 'latest',
+                        'region'      => 'us-standard',
+                        'version'     => 'latest',
                         'buckets'     => [
                             'my-bucket-name' => '*',
                         ],
@@ -97,10 +97,10 @@ class CdnTest extends TestCase
                         ],
                         'metadata' => [],
 
-                        'expires' => gmdate("D, d M Y H:i:s T", strtotime("+5 years")),
+                        'expires' => gmdate('D, d M Y H:i:s T', strtotime('+5 years')),
 
                         'cache-control' => 'max-age=2628000',
-                        
+
                         'version' => '',
                     ],
                 ],
@@ -150,15 +150,15 @@ class CdnTest extends TestCase
         $m_spl_file->shouldReceive('getPathname')
             ->andReturn('Publiux\laravelcdn/tests/Publiux/laravelcdn/AwsS3ProviderTest.php');
         $m_spl_file->shouldReceive('getRealPath')
-            ->andReturn(__DIR__ . '/AwsS3ProviderTest.php');
+            ->andReturn(__DIR__.'/AwsS3ProviderTest.php');
 
         // partial mock
-        $p_aws_s3_provider = M::mock('\Publiux\laravelcdn\Providers\AwsS3Provider[connect]', array
-        (
+        $p_aws_s3_provider = M::mock('\Publiux\laravelcdn\Providers\AwsS3Provider[connect]', 
+        [
             $m_console,
             $m_validator,
-            $m_helper
-        ));
+            $m_helper,
+        ]);
 
         $m_s3 = M::mock('Aws\S3\S3Client')->shouldIgnoreMissing();
         $m_s3->shouldReceive('factory')
@@ -187,5 +187,4 @@ class CdnTest extends TestCase
 
         assertEquals($result, true);
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Publiux\laravelcdn;
 
 use Publiux\laravelcdn\Contracts\AssetInterface;
@@ -6,17 +7,16 @@ use Publiux\laravelcdn\Contracts\AssetInterface;
 /**
  * Class Asset
  * Class Asset used to parse and hold all assets and
- * paths related data and configurations
+ * paths related data and configurations.
  *
  * @category DTO
- * @package Publiux\laravelcdn
+ *
  * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class Asset implements AssetInterface
 {
-
     /**
-     * default [include] configurations
+     * default [include] configurations.
      *
      * @var array
      */
@@ -27,7 +27,7 @@ class Asset implements AssetInterface
     ];
 
     /**
-     * default [exclude] configurations
+     * default [exclude] configurations.
      *
      * @var array
      */
@@ -40,42 +40,42 @@ class Asset implements AssetInterface
     ];
 
     /**
-     * @var Array
+     * @var array
      */
     protected $included_directories;
 
     /**
-     * @var Array
+     * @var array
      */
     protected $included_files;
 
     /**
-     * @var Array
+     * @var array
      */
     protected $included_extensions;
 
     /**
-     * @var Array
+     * @var array
      */
     protected $included_patterns;
 
     /**
-     * @var Array
+     * @var array
      */
     protected $excluded_directories;
 
     /**
-     * @var Array
+     * @var array
      */
     protected $excluded_files;
 
     /**
-     * @var Array
+     * @var array
      */
     protected $excluded_extensions;
 
     /**
-     * @var Array
+     * @var array
      */
     protected $excluded_patterns;
 
@@ -92,13 +92,13 @@ class Asset implements AssetInterface
     public $assets;
 
     /**
-     * build a Asset object that contains the assets related configurations
+     * build a Asset object that contains the assets related configurations.
      *
      * @param array $configurations
      *
      * @return $this
      */
-    public function init($configurations = array())
+    public function init($configurations = [])
     {
         $this->parseAndFillConfiguration($configurations);
 
@@ -114,7 +114,6 @@ class Asset implements AssetInterface
 
         return $this;
     }
-
 
     /**
      * Check if the config file has any missed attribute, and if any attribute
@@ -132,7 +131,7 @@ class Asset implements AssetInterface
     }
 
     /**
-     * @return Array
+     * @return array
      */
     public function getIncludedDirectories()
     {
@@ -140,7 +139,7 @@ class Asset implements AssetInterface
     }
 
     /**
-     * @return Array
+     * @return array
      */
     public function getIncludedExtensions()
     {
@@ -148,7 +147,7 @@ class Asset implements AssetInterface
     }
 
     /**
-     * @return Array
+     * @return array
      */
     public function getIncludedPatterns()
     {
@@ -156,7 +155,7 @@ class Asset implements AssetInterface
     }
 
     /**
-     * @return Array
+     * @return array
      */
     public function getExcludedDirectories()
     {
@@ -164,7 +163,7 @@ class Asset implements AssetInterface
     }
 
     /**
-     * @return Array
+     * @return array
      */
     public function getExcludedFiles()
     {
@@ -172,7 +171,7 @@ class Asset implements AssetInterface
     }
 
     /**
-     * @return Array
+     * @return array
      */
     public function getExcludedExtensions()
     {
@@ -180,7 +179,7 @@ class Asset implements AssetInterface
     }
 
     /**
-     * @return Array
+     * @return array
      */
     public function getExcludedPatterns()
     {
@@ -210,5 +209,4 @@ class Asset implements AssetInterface
     {
         return $this->exclude_hidden;
     }
-
 }
