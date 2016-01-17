@@ -1,0 +1,44 @@
+{
+    "name": "publiux/laravelcdn",
+    "description": "Content Delivery Network (CDN) Package for Laravel",
+    "license": "MIT",
+    "keywords": [
+      "laravel",
+      "CDN",
+      "upload",
+      "AWS",
+      "S3",
+      "AWS S3",
+      "amazon",
+      "Assets Upload",
+      "Content Delivery Network"
+    ],
+    "authors": [
+        {
+            "name": "Raul Ruiz",
+            "email": "publiux@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.9",
+        "illuminate/support": "~5.0",
+        "illuminate/config": "~5.0",
+        "symfony/finder": "2.8.*|3.0.*",
+        "symfony/console": "2.8.*|3.0.*",
+        "aws/aws-sdk-php": "~3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4.0",
+        "mockery/mockery": "0.9.3"
+    },
+    "autoload": {
+        "classmap": [
+            "tests/TestCase.php",
+            "src/Publiux/laravelcdn/Exceptions"
+        ],
+        "psr-0": {
+            "Publiux\\laravelcdn\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}

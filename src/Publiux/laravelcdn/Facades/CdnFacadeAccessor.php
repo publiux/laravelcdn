@@ -1,0 +1,25 @@
+<?php
+namespace Publiux\laravelcdn\Facades;
+
+use Illuminate\Support\Facades\Facade;
+
+/**
+ * Class CdnFacadeAccessor
+ *
+ * @category Facade Accessor
+ * @package Vinelab\Cdn\Facades
+ * @author  Mahmoud Zalt <mahmoud@vinelab.com>
+ */
+class CdnFacadeAccessor extends Facade
+{
+
+    /**
+     * Get the registered name of the component.
+     *
+     * @return string
+     */
+    protected static function getFacadeAccessor()
+    {
+        return 'cdn';
+    }
+}
