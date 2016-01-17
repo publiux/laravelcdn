@@ -15,7 +15,7 @@ return [
     | Default: false
     |
     */
-    'bypass' => false,
+    'bypass' => env('CDN_Bypass', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -38,7 +38,7 @@ return [
     | Set your CDN url, [without the bucket name]
     |
     */
-    'url' => 'https://s3.amazonaws.com',
+    'url' => env('CDN_Url', 'https://s3.amazonaws.com'),
 
     /*
     |--------------------------------------------------------------------------
@@ -143,8 +143,8 @@ return [
                 |
                 */
                 'cloudfront'    => [
-                    'use'     => false,
-                    'cdn_url' => '',
+                    'use'     => env('CDN_UseCloudFront', false),
+                    'cdn_url' => env('CDN_CloudFrontUrl', ''),
                 ],
 
                 /*

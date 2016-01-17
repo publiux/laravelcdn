@@ -53,27 +53,73 @@ Add the service provider to `config/app.php`:
 ),
 ```
 
-## Configuration
-
-Set the Credentials in the `.env` file.
-
-*Note: you must have an `.env` file at the project root, to hold your sensitive information.*
-
-```bash
-AWS_ACCESS_KEY_ID=
-AWS_SECRET_ACCESS_KEY=
-```
-
 Publish the package config file:
 
 ```bash
 php artisan vendor:publish
 ```
 
-You can find it at `config/cdn.php`
+## Environment Configuration
 
+This package can be configured by editing the config/app.php file.  Alternatively, you can set many of these options in as environment variables in your '.env' file.
 
-##### Default Provider
+##### AWS Credentials
+Set your AWS Credentials and other settings in the `.env` file.
+
+*Note: you should always have an `.env` file at the project root, to hold your sensitive information. This file should usually not be committed to your VCS.*
+
+```bash
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+```
+
+##### CDN URL
+
+Set the CDN URL:
+
+```php
+'url' => env('CDN_Url', 'https://s3.amazonaws.com'),
+```
+
+This can altered in your '.env' file as follows:
+
+```bash
+CDN_Url=
+```
+
+##### Bypass
+
+To load your LOCAL assets for testing or during development, set the `bypass` option to `true`:
+
+```php
+'bypass' => env('CDN_Bypass', false),
+```
+
+This can be altered in your '.env' file as follows:
+
+```bash
+CDN_Bypass=
+```
+
+##### Cloudfront Support
+
+```php
+'cloudfront'    => [
+    'use' => env('CDN_UseCloudFront', false),
+    'cdn_url' => env('CDN_CloudFrontUrl', false)
+],
+```
+
+This can be altered in your '.env' file as follows:
+
+```bash
+CDN_UseCloudFront=
+CDN_CloudFrontUrl=
+```
+
+##### Default CDN Provider
+For now, the only CDN provider available is AwsS3. This option cannot be set in '.env'.
+
 ```php
 'default' => 'AwsS3',
 ```
@@ -137,30 +183,7 @@ Specify what to be ignored.
 ],
 ```
 
-##### URL
 
-Set the CDN URL:
-
-```php
-'url' => 'https://s3.amazonaws.com',
-```
-
-##### Bypass
-
-To load your LOCAL assets for testing or during development, set the `bypass` option to `true`:
-
-```php
-'bypass' => true,
-```
-
-##### Cloudfront Support
-
-```php
-'cloudfront'    => [
-    'use' => false,
-    'cdn_url' => ''
-],
-```
 
 
 ##### Other Configurations
@@ -176,7 +199,11 @@ You can always refer to the AWS S3 Documentation for more details: [aws-sdk-php]
 
 ## Usage
 
+You can 'push' your assets to your CDN and you can 'empty' your assets as well using the commands below.
+
 #### Push
+
+Only changed assets are pushed to the CDN. (THanks, )
 
 Upload assets to CDN
 ```bash
