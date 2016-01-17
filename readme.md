@@ -267,3 +267,8 @@ If you discover any security related issues, please email publiux@gmail.com inst
 ## License
 
 The MIT License (MIT). Please see [License File](https://github.com/publiux/laravelcdn/blob/master/LICENSE) for more information.
+
+## Changelog
+
+#### v1.0.1
+- Allow configuration using environment values
