@@ -1,19 +1,19 @@
 <?php
+
 namespace Publiux\laravelcdnn;
 
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class CdnServiceProvider
+ * Class CdnServiceProvider.
  *
  * @category Service Provider
- * @package Publiux\laravelcdn
+ *
  * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  * @author  Abed Halawi <abed.halawi@vinelab.com>
  */
 class CdnServiceProvider extends ServiceProvider
 {
-
     /**
      * Indicates if loading of the provider is deferred.
      *
@@ -29,7 +29,7 @@ class CdnServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__ . '/../../config/cdn.php' => config_path('cdn.php')
+            __DIR__.'/../../config/cdn.php' => config_path('cdn.php'),
         ]);
     }
 
@@ -129,7 +129,6 @@ class CdnServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return array();
+        return [];
     }
-
 }

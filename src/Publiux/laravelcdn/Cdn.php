@@ -1,4 +1,5 @@
 <?php
+
 namespace Publiux\laravelcdn;
 
 use Publiux\laravelcdn\Contracts\AssetInterface;
@@ -9,17 +10,16 @@ use Publiux\laravelcdn\Contracts\ProviderFactoryInterface;
 
 /**
  * Class Cdn
- * Class Cdn is the manager and the main class of this package
+ * Class Cdn is the manager and the main class of this package.
  *
  * @category Main Class
- * @package Publiux\laravelcdn
+ *
  * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class Cdn implements CdnInterface
 {
-
     /**
-     * An instance of the finder class
+     * An instance of the finder class.
      *
      * @var Contracts\
      */
@@ -27,7 +27,7 @@ class Cdn implements CdnInterface
 
     /**
      * The object that will hold the assets configurations
-     * and the paths of the assets
+     * and the paths of the assets.
      *
      * @var Contracts\AssetInterface
      */
@@ -63,9 +63,8 @@ class Cdn implements CdnInterface
         $this->helper = $helper;
     }
 
-
     /**
-     * Will be called from the Publiux\laravelcdn\PushCommand class on Fire()
+     * Will be called from the Publiux\laravelcdn\PushCommand class on Fire().
      */
     public function push()
     {
@@ -86,7 +85,7 @@ class Cdn implements CdnInterface
     }
 
     /**
-     * Will be called from the Publiux\laravelcdn\EmptyCommand class on Fire()
+     * Will be called from the Publiux\laravelcdn\EmptyCommand class on Fire().
      */
     public function emptyBucket()
     {
@@ -98,5 +97,4 @@ class Cdn implements CdnInterface
 
         return $provider->emptyBucket();
     }
-
 }

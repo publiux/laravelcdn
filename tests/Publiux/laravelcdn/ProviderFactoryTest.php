@@ -1,24 +1,23 @@
 <?php
+
 namespace Publiux\laravelcdn\Tests;
 
 use Mockery as M;
 
 /**
- * Class ProviderFactoryTest
+ * Class ProviderFactoryTest.
  *
  * @category Test
- * @package Publiux\laravelcdn\Tests
+ *
  * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class ProviderFactoryTest extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
 
-        $this->provider_factory = new \Publiux\laravelcdn\ProviderFactory;
-
+        $this->provider_factory = new \Publiux\laravelcdn\ProviderFactory();
     }
 
     public function tearDown()
@@ -45,7 +44,6 @@ class ProviderFactoryTest extends TestCase
         assertEquals($provider, $m_aws_s3);
     }
 
-
     /**
      * @expectedException \Publiux\laravelcdn\Exceptions\MissingConfigurationException
      */
@@ -59,5 +57,4 @@ class ProviderFactoryTest extends TestCase
 
         $this->provider_factory->create($configurations);
     }
-
 }
