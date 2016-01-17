@@ -12,8 +12,12 @@
 The package provides the developer the ability to upload his assets (or any public file) to a CDN with a single artisan command.
 And then it allows him to switch between the local and the online version of the files.
 
+###### Fork From [Vinelab/cdn](https://github.com/Vinelab/cdn)
+This project has been forked from https://github.com/Vinelab/cdn. All credit for the original work goes there.
+
 #### Laravel Support
-- For Laravel 5.2 and above use the latest realease (`master`).
+- This fork support Laravel 5.2. (`master`).
+- As new versions of Laravel are released, new branches will be created to create compatibility if there are breaking changes in laravel.
 
 ## Highlights
 
