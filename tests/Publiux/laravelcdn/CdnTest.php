@@ -160,7 +160,7 @@ class CdnTest extends TestCase
             $m_helper
         ));
 
-        $m_s3 = M::mock('Aws\S3\S3Client');
+        $m_s3 = M::mock('Aws\S3\S3Client')->shouldIgnoreMissing();
         $m_s3->shouldReceive('factory')
             ->andReturn('Aws\S3\S3Client');
         $m_command = M::mock('Aws\Command');
