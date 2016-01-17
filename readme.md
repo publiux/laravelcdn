@@ -35,7 +35,7 @@ And then it allows him to switch between the local and the online version of the
 Require `publiux/laravelcdn` in your project:
 
 ```bash 
-composer require publiux/laravelcdn:*
+composer require publiux/laravelcdn
 ```
 
 *Since this is a Laravel package we need to register the service provider:*
@@ -63,7 +63,7 @@ AWS_SECRET_ACCESS_KEY=
 Publish the package config file:
 
 ```bash
-php artisan vendor:publish publiux/laravelcdn
+php artisan vendor:publish
 ```
 
 You can find it at `config/cdn.php`
