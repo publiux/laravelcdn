@@ -1,6 +1,6 @@
 <?php
 
-namespace Publiux\laravelcdnn;
+namespace Publiux\laravelcdn;
 
 use Illuminate\Support\ServiceProvider;
 
