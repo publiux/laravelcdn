@@ -1,18 +1,18 @@
 <?php
+
 namespace Publiux\laravelcdn\Providers;
 
 use Publiux\laravelcdn\Providers\Contracts\ProviderInterface;
 
 /**
- * Class Provider
+ * Class Provider.
  *
  * @category Drivers Abstract Class
- * @package  Publiux\laravelcdn\Providers
+ *
  * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
 abstract class Provider implements ProviderInterface
 {
-
     /**
      * @var string
      */
@@ -43,5 +43,5 @@ abstract class Provider implements ProviderInterface
      */
     public $console;
 
-    abstract function upload($assets);
-} 
+    abstract public function upload($assets);
+}

@@ -1,18 +1,18 @@
 <?php
+
 namespace Publiux\laravelcdn\Tests;
 
 use Mockery as M;
 
 /**
- * Class CdnFacadeTest
+ * Class CdnFacadeTest.
  *
  * @category Test
- * @package  Publiux\laravelcdn\Tests
+ *
  * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class CdnFacadeTest extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -25,8 +25,8 @@ class CdnFacadeTest extends TestCase
             'providers' => [
                 'aws' => [
                     's3' => [
-                        'region'  => 'rrrrrrrrrrrgggggggggnnnnn',
-                        'version' => 'vvvvvvvvssssssssssnnnnnnn',
+                        'region'      => 'rrrrrrrrrrrgggggggggnnnnn',
+                        'version'     => 'vvvvvvvvssssssssssnnnnnnn',
                         'buckets'     => [
                             'bbbuuuucccctttt' => '*',
                         ],
@@ -35,27 +35,27 @@ class CdnFacadeTest extends TestCase
                             'use'     => false,
                             'cdn_url' => '',
                         ],
-                        'version'     => '1'
+                        'version'     => '1',
                     ],
                 ],
             ],
             'include'   => [
-                'directories' => [ __DIR__ ],
-                'extensions'  => [ ],
-                'patterns'    => [ ],
+                'directories' => [__DIR__],
+                'extensions'  => [],
+                'patterns'    => [],
             ],
             'exclude'   => [
-                'directories' => [ ],
-                'files'       => [ ],
-                'extensions'  => [ ],
-                'patterns'    => [ ],
+                'directories' => [],
+                'files'       => [],
+                'extensions'  => [],
+                'patterns'    => [],
                 'hidden'      => true,
             ],
         ];
 
         $this->asset_path = 'foo/bar.php';
-        $this->path_path  = 'public/foo/bar.php';
-        $this->asset_url  = 'https://bucket.s3.amazonaws.com/public/foo/bar.php';
+        $this->path_path = 'public/foo/bar.php';
+        $this->asset_url = 'https://bucket.s3.amazonaws.com/public/foo/bar.php';
 
         $this->provider = M::mock('Publiux\laravelcdn\Providers\AwsS3Provider');
 
@@ -67,7 +67,7 @@ class CdnFacadeTest extends TestCase
         $this->helper->shouldReceive('cleanPath')->andReturn($this->asset_path);
         $this->helper->shouldReceive('startsWith')->andReturn(true);
 
-        $this->validator = new \Publiux\laravelcdn\Validators\CdnFacadeValidator;
+        $this->validator = new \Publiux\laravelcdn\Validators\CdnFacadeValidator();
 
         $this->facade = new \Publiux\laravelcdn\CdnFacade(
             $this->provider_factory, $this->helper, $this->validator);
@@ -106,7 +106,6 @@ class CdnFacadeTest extends TestCase
      */
     public function testUrlGeneratorThrowsException()
     {
-        $this->invokeMethod($this->facade, 'generateUrl', array( null, null ));
+        $this->invokeMethod($this->facade, 'generateUrl', [null, null]);
     }
-
 }

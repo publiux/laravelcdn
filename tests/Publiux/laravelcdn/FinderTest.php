@@ -1,19 +1,19 @@
 <?php
+
 namespace Publiux\laravelcdn\Tests;
 
 use Illuminate\Support\Collection;
 use Mockery as M;
 
 /**
- * Class FinderTest
+ * Class FinderTest.
  *
  * @category Test
- * @package Publiux\laravelcdn\Tests
+ *
  * @author  Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class FinderTest extends TestCase
 {
-
     public function setUp()
     {
         parent::setUp();
@@ -27,13 +27,13 @@ class FinderTest extends TestCase
 
     public function testReadReturnCorrectDataType()
     {
-        $asset_holder = new \Publiux\laravelcdn\Asset;
+        $asset_holder = new \Publiux\laravelcdn\Asset();
 
-        $asset_holder->init(array(
+        $asset_holder->init([
             'include' => [
                 'directories' => [__DIR__],
-            ]
-        ));
+            ],
+        ]);
 
         $console_output = M::mock('Symfony\Component\Console\Output\ConsoleOutput');
         $console_output->shouldReceive('writeln')
@@ -48,15 +48,14 @@ class FinderTest extends TestCase
         assertEquals($result, new Collection($result->all()));
     }
 
-
     /**
      * @expectedException \InvalidArgumentException
      */
     public function testReadThrowsException()
     {
-        $asset_holder = new \Publiux\laravelcdn\Asset;
+        $asset_holder = new \Publiux\laravelcdn\Asset();
 
-        $asset_holder->init(array('include' => []));
+        $asset_holder->init(['include' => []]);
 
         $console_output = M::mock('Symfony\Component\Console\Output\ConsoleOutput');
         $console_output->shouldReceive('writeln')
@@ -65,7 +64,5 @@ class FinderTest extends TestCase
         $finder = new \Publiux\laravelcdn\Finder($console_output);
 
         $finder->read($asset_holder);
-
     }
-
 }

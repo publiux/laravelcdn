@@ -1,19 +1,19 @@
 <?php
+
 namespace Publiux\laravelcdn\Commands;
 
 use Illuminate\Console\Command;
 use Publiux\laravelcdn\Contracts\CdnInterface;
 
 /**
- * Class PushCommand
+ * Class PushCommand.
  *
  * @category Command
- * @package  Vinelab\Cdn\Commands
+ *
  * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
 class EmptyCommand extends Command
 {
-
     /**
      * The console command name.
      *
@@ -29,7 +29,7 @@ class EmptyCommand extends Command
     protected $description = 'Empty all assets from CDN';
 
     /**
-     * an instance of the main Cdn class
+     * an instance of the main Cdn class.
      *
      * @var Vinelab\Cdn\Cdn
      */
@@ -62,9 +62,9 @@ class EmptyCommand extends Command
      */
     protected function getArguments()
     {
-        return array(
+        return [
 //			array('cdn', InputArgument::OPTIONAL, 'cdn option.'),
-        );
+        ];
     }
 
     /**
@@ -74,9 +74,8 @@ class EmptyCommand extends Command
      */
     protected function getOptions()
     {
-        return array(
+        return [
 //			array('example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null),
-        );
+        ];
     }
-
 }
