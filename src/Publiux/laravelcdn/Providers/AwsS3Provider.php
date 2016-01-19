@@ -204,8 +204,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
                 //Ask the user to confirm that they want to continue the upload.
                 if (!$this->console->confirm('Do you wish to continue? [y|N]')) {
                     $this->console->writeln('<fg=red>Upload cancelled.</fg=cyan>');
-
-                    return;
+                    return true;
                 }
             }
 
