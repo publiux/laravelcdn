@@ -192,24 +192,23 @@ class AwsS3Provider extends Provider implements ProviderInterface
 
         // upload each asset file to the CDN
         if (count($assets) > 0) {
-            
+
             // Review files before upload if user wishes.
             $review = $this->console->option('review');
-            if($review)
-            {
+            if ($review) {
                 $this->console->writeln('<fg=green>The files to be uploaded are....</fg=green>');
                 foreach ($assets as $file) {
-                    $this->console->writeln('<fg=cyan>' . $file->getRealpath() . '</fg=cyan>');
+                    $this->console->writeln('<fg=cyan>'.$file->getRealpath().'</fg=cyan>');
                 }
-                
+
                 //Ask the user to confirm that they want to continue the upload.
                 if (!$this->console->confirm('Do you wish to continue? [y|N]')) {
                     $this->console->writeln('<fg=red>Upload cancelled.</fg=cyan>');
+
                     return;
                 }
             }
-            
-            
+
             $this->console->writeln('<fg=yellow>Upload in progress......</fg=yellow>');
             foreach ($assets as $file) {
                 try {
