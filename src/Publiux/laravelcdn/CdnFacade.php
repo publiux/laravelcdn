@@ -80,7 +80,7 @@ class CdnFacade implements CdnFacadeInterface
         // if asset always append the public/ dir to the path (since the user should not add public/ to asset)
         return $this->generateUrl($path, 'public/');
     }
-    
+
     /**
      * this function will be called from the 'views' using the
      * 'Cdn' facade {{Cdn::elixir('')}} to convert the elixir generated file path into
@@ -88,18 +88,18 @@ class CdnFacade implements CdnFacadeInterface
      *
      * @param $path
      *
-     * @return mixed
-     *
      * @throws Exceptions\EmptyPathException, \InvalidArgumentException
+     *
+     * @return mixed
      */
-	public function elixir($path)
+    public function elixir($path)
     {
         static $manifest = null;
         if (is_null($manifest)) {
             $manifest = json_decode(file_get_contents(public_path('build/rev-manifest.json')), true);
         }
         if (isset($manifest[$path])) {
-            return $this->generateUrl('build/' . $manifest[$path], 'public/');
+            return $this->generateUrl('build/'.$manifest[$path], 'public/');
         }
         throw new \InvalidArgumentException("File {$path} not defined in asset manifest.");
     }
