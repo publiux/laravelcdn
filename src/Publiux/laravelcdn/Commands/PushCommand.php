@@ -20,7 +20,7 @@ class PushCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'cdn:push {--R|review= : Review the files to be uploaded before commencing upload}';
+    protected $signature = 'cdn:push';
 
     /**
      * The console command description.
