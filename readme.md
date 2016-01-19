@@ -245,7 +245,7 @@ $ ./vendor/bin/phpunit
 
 ## Support
 
-[On Github](https://github.com/publiux/laravelcdn/issues)
+Please request support or submit issues [via Github](https://github.com/publiux/laravelcdn/issues)
 
 
 ## Contributing
@@ -272,5 +272,6 @@ The MIT License (MIT). Please see [License File](https://github.com/publiux/lara
 
 #### v1.0.2
 - Fixed bug where the elixir function was inadvertently omitted from the release.
+
 #### v1.0.1
 - Allow configuration using environment values
