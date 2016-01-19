@@ -194,7 +194,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
         if (count($assets) > 0) {
 
             // Review files before upload if user wishes.
-            $review = $this->console->option('review');
+            /*$review = $this->console->option('review');
             if ($review) {
                 $this->console->writeln('<fg=green>The files to be uploaded are....</fg=green>');
                 foreach ($assets as $file) {
@@ -206,7 +206,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
                     $this->console->writeln('<fg=red>Upload cancelled.</fg=cyan>');
                     return true;
                 }
-            }
+            }*/
 
             $this->console->writeln('<fg=yellow>Upload in progress......</fg=yellow>');
             foreach ($assets as $file) {
