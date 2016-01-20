@@ -52,7 +52,6 @@ class AwsS3ProviderTest extends TestCase
     
     public function setupNonCloudfrontTest()
     {
-        $this->m_helper = new \Publiux\laravelcdn\CdnHelper;
         $this->m_helper = M::mock('Publiux\laravelcdn\CdnHelper');
         $this->m_helper->shouldReceive('parseUrl')
                        ->andReturn(parse_url($this->url));
@@ -71,7 +70,6 @@ class AwsS3ProviderTest extends TestCase
     
     public function setupCloudfrontTest($fullScheme = false)
     {
-        $this->m_helper = new \Publiux\laravelcdn\CdnHelper;
         $this->m_helper = M::mock('Publiux\laravelcdn\CdnHelper');
         
         if($fullScheme)
