@@ -11,6 +11,7 @@ use Mockery as M;
  * @category Test
  *
  * @author   Mahmoud Zalt <mahmoud@vinelab.com>
+ * @author   Raul Ruiz <publiux@gmail.com>
  */
 class AwsS3ProviderTest extends TestCase
 {
