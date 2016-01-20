@@ -32,9 +32,10 @@ class AwsS3ProviderTest extends TestCase
         $this->m_validator = M::mock('Publiux\laravelcdn\Validators\Contracts\ProviderValidatorInterface');
         $this->m_validator->shouldReceive('validate');
 
-        $this->m_helper = M::mock('Publiux\laravelcdn\CdnHelper');
-        $this->m_helper->shouldReceive('parseUrl')
-                       ->andReturn($this->pased_url);
+        $this->m_helper = new Publiux\laravelcdn\CdnHelper;
+        //$this->m_helper = M::mock('Publiux\laravelcdn\CdnHelper');
+        //$this->m_helper->shouldReceive('parseUrl')
+        //               ->andReturn($this->pased_url);
 
         $this->m_spl_file = M::mock('Symfony\Component\Finder\SplFileInfo');
         $this->m_spl_file->shouldReceive('getPathname')->andReturn('publiux/laravelcdn/tests/Publiux/laravelcdn/AwsS3ProviderTest.php');
@@ -199,9 +200,6 @@ class AwsS3ProviderTest extends TestCase
                 ],
             ],
         ];
-        
-        $this->m_helper->shouldReceive('parseUrl')
-                       ->andReturn($this->cloudfront_url_fullscheme);
 
         $this->p_awsS3Provider->init($configurations);
 
