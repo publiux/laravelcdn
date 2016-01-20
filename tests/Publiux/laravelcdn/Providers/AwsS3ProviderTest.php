@@ -37,7 +37,7 @@ class AwsS3ProviderTest extends TestCase
                        ->andReturn($this->pased_url);
 
         $this->m_spl_file = M::mock('Symfony\Component\Finder\SplFileInfo');
-        $this->m_spl_file->shouldReceive('getPathname')->andReturn('vinelab/cdn/tests/Vinelab/Cdn/AwsS3ProviderTest.php');
+        $this->m_spl_file->shouldReceive('getPathname')->andReturn('publiux/laravelcdn/tests/Publiux/laravelcdn/AwsS3ProviderTest.php');
         $this->m_spl_file->shouldReceive('getRealPath')->andReturn(__DIR__.'/AwsS3ProviderTest.php');
 
         $this->p_awsS3Provider = M::mock('\Publiux\laravelcdn\Providers\AwsS3Provider[connect]', 
