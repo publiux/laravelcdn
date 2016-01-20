@@ -36,8 +36,6 @@ class AwsS3ProviderTest extends TestCase
         $this->m_spl_file->shouldReceive('getPathname')->andReturn('publiux/laravelcdn/tests/Publiux/laravelcdn/AwsS3ProviderTest.php');
         $this->m_spl_file->shouldReceive('getRealPath')->andReturn(__DIR__.'/AwsS3ProviderTest.php');
 
-        
-
         $this->m_s3 = M::mock('Aws\S3\S3Client');
         $this->m_s3->shouldReceive('factory')->andReturn('Aws\S3\S3Client');
         $m_command = M::mock('Aws\Command');
@@ -50,49 +48,46 @@ class AwsS3ProviderTest extends TestCase
 
         $this->m_s3->shouldReceive('execute');
     }
-    
+
     public function setupNonCloudfrontTest()
     {
         $this->m_helper = M::mock('Publiux\laravelcdn\CdnHelper');
         $this->m_helper->shouldReceive('parseUrl')
                        ->andReturn(parse_url($this->url));
-                       
-        $this->p_awsS3Provider = M::mock('\Publiux\laravelcdn\Providers\AwsS3Provider[connect]', 
+
+        $this->p_awsS3Provider = M::mock('\Publiux\laravelcdn\Providers\AwsS3Provider[connect]',
         [
             $this->m_console,
             $this->m_validator,
             $this->m_helper,
         ]);
-        
+
         $this->p_awsS3Provider->setS3Client($this->m_s3);
-        
+
         $this->p_awsS3Provider->shouldReceive('connect')->andReturn(true);
     }
-    
+
     public function setupCloudfrontTest($fullScheme = false)
     {
         $this->m_helper = M::mock('Publiux\laravelcdn\CdnHelper');
-        
-        if($fullScheme)
-        {
+
+        if ($fullScheme) {
             $this->m_helper->shouldReceive('parseUrl')
                        ->andReturn(parse_url($this->cloudfront_url_fullscheme));
-        }
-        else
-        {
+        } else {
             $this->m_helper->shouldReceive('parseUrl')
                        ->andReturn(parse_url($this->cloudfront_url_noscheme));
         }
-                       
-        $this->p_awsS3Provider = M::mock('\Publiux\laravelcdn\Providers\AwsS3Provider[connect]', 
+
+        $this->p_awsS3Provider = M::mock('\Publiux\laravelcdn\Providers\AwsS3Provider[connect]',
         [
             $this->m_console,
             $this->m_validator,
             $this->m_helper,
         ]);
-        
+
         $this->p_awsS3Provider->setS3Client($this->m_s3);
-        
+
         $this->p_awsS3Provider->shouldReceive('connect')->andReturn(true);
     }
 
@@ -129,7 +124,7 @@ class AwsS3ProviderTest extends TestCase
                 ],
             ],
         ];
-        
+
         $this->setupNonCloudfrontTest();
 
         $awsS3Provider_obj = $this->p_awsS3Provider->init($configurations);
@@ -164,9 +159,8 @@ class AwsS3ProviderTest extends TestCase
                 ],
             ],
         ];
-        
-        $this->setupNonCloudfrontTest();
 
+        $this->setupNonCloudfrontTest();
 
         $this->p_awsS3Provider->init($configurations);
 
@@ -202,7 +196,7 @@ class AwsS3ProviderTest extends TestCase
                 ],
             ],
         ];
-        
+
         $this->setupNonCloudfrontTest();
 
         $this->p_awsS3Provider->init($configurations);
@@ -211,7 +205,7 @@ class AwsS3ProviderTest extends TestCase
 
         assertEquals($this->cdn_url, $result);
     }
-    
+
     public function testUrlGeneratorCloudFrontFullScheme()
     {
         $configurations = [
@@ -239,7 +233,7 @@ class AwsS3ProviderTest extends TestCase
                 ],
             ],
         ];
-        
+
         $this->setupCloudfrontTest(true);
 
         $this->p_awsS3Provider->init($configurations);
@@ -248,7 +242,7 @@ class AwsS3ProviderTest extends TestCase
 
         assertEquals($this->cloudfront_url_fullscheme, $result);
     }
-    
+
     public function testUrlGeneratorCloudFrontNoScheme()
     {
         $configurations = [
@@ -276,7 +270,7 @@ class AwsS3ProviderTest extends TestCase
                 ],
             ],
         ];
-        
+
         $this->setupCloudfrontTest(false);
 
         $this->p_awsS3Provider->init($configurations);
@@ -313,9 +307,8 @@ class AwsS3ProviderTest extends TestCase
                 ],
             ],
         ];
-        
-        $this->setupNonCloudfrontTest();
 
+        $this->setupNonCloudfrontTest();
 
         $this->p_awsS3Provider->init($configurations);
 
