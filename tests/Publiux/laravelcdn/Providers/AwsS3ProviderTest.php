@@ -32,7 +32,7 @@ class AwsS3ProviderTest extends TestCase
         $this->m_validator = M::mock('Publiux\laravelcdn\Validators\Contracts\ProviderValidatorInterface');
         $this->m_validator->shouldReceive('validate');
 
-        $this->m_helper = new Publiux\laravelcdn\CdnHelper;
+        $this->m_helper = new \Publiux\laravelcdn\CdnHelper;
         //$this->m_helper = M::mock('Publiux\laravelcdn\CdnHelper');
         //$this->m_helper->shouldReceive('parseUrl')
         //               ->andReturn($this->pased_url);
