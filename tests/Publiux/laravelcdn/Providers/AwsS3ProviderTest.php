@@ -69,7 +69,7 @@ class AwsS3ProviderTest extends TestCase
         $this->p_awsS3Provider->shouldReceive('connect')->andReturn(true);
     }
     
-    public function setupCloudfrontFullSchemeTest($fullScheme = false)
+    public function setupCloudfrontTest($fullScheme = false)
     {
         $this->m_helper = new \Publiux\laravelcdn\CdnHelper;
         $this->m_helper = M::mock('Publiux\laravelcdn\CdnHelper');
