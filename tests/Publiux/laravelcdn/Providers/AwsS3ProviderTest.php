@@ -199,6 +199,9 @@ class AwsS3ProviderTest extends TestCase
                 ],
             ],
         ];
+        
+        $this->m_helper->shouldReceive('parseUrl')
+                       ->andReturn($this->cloudfront_url_fullscheme);
 
         $this->p_awsS3Provider->init($configurations);
 
@@ -234,6 +237,9 @@ class AwsS3ProviderTest extends TestCase
                 ],
             ],
         ];
+        
+        $this->m_helper->shouldReceive('parseUrl')
+                       ->andReturn($this->cloudfront_url_noscheme);
 
         $this->p_awsS3Provider->init($configurations);
 
