@@ -20,6 +20,8 @@ class AwsS3ProviderTest extends TestCase
 
         $this->url = 'http://www.google.com';
         $this->cdn_url = 'http://my-bucket-name.www.google.com/public/css/cool/style.css';
+        $this->cloudfront_url_fullscheme = 'http://cool.cloudfront.net/public/css/cool/style.css';
+        $this->cloudfront_url_noscheme = '//cool.cloudfront.net/public/css/cool/style.css';
         $this->path = 'public/css/cool/style.css';
         $this->path_url = 'http://www.google.com/public/css/cool/style.css';
         $this->pased_url = parse_url($this->url);
@@ -135,7 +137,7 @@ class AwsS3ProviderTest extends TestCase
         assertEquals(true, $result);
     }
 
-    public function testUrlGenerator()
+    public function testUrlGeneratorS3()
     {
         $configurations = [
             'default'   => 'AwsS3',
@@ -168,6 +170,76 @@ class AwsS3ProviderTest extends TestCase
         $result = $this->p_awsS3Provider->urlGenerator($this->path);
 
         assertEquals($this->cdn_url, $result);
+    }
+    
+    public function testUrlGeneratorCloudFrontFullScheme()
+    {
+        $configurations = [
+            'default'   => 'AwsS3',
+            'url'       => 'https://s3.amazonaws.com',
+            'threshold' => 10,
+            'providers' => [
+                'aws' => [
+                    's3' => [
+                        'region'      => 'us-standard',
+                        'version'     => 'latest',
+                        'buckets'     => [
+                            'my-bucket-name' => '*',
+                        ],
+                        'acl'           => 'public-read',
+                        'cloudfront'    => [
+                            'use'     => true,
+                            'cdn_url' => 'http://cool.cloudfront.net',
+                        ],
+                        'metadata'      => [],
+                        'expires'       => gmdate('D, d M Y H:i:s T', strtotime('+5 years')),
+                        'cache-control' => 'max-age=2628000',
+                        'version'       => null,
+                    ],
+                ],
+            ],
+        ];
+
+        $this->p_awsS3Provider->init($configurations);
+
+        $result = $this->p_awsS3Provider->urlGenerator($this->path);
+
+        assertEquals($this->cloudfront_url_fullscheme, $result);
+    }
+    
+    public function testUrlGeneratorCloudFrontNoScheme()
+    {
+        $configurations = [
+            'default'   => 'AwsS3',
+            'url'       => 'https://s3.amazonaws.com',
+            'threshold' => 10,
+            'providers' => [
+                'aws' => [
+                    's3' => [
+                        'region'      => 'us-standard',
+                        'version'     => 'latest',
+                        'buckets'     => [
+                            'my-bucket-name' => '*',
+                        ],
+                        'acl'           => 'public-read',
+                        'cloudfront'    => [
+                            'use'     => true,
+                            'cdn_url' => '//cool.cloudfront.net',
+                        ],
+                        'metadata'      => [],
+                        'expires'       => gmdate('D, d M Y H:i:s T', strtotime('+5 years')),
+                        'cache-control' => 'max-age=2628000',
+                        'version'       => null,
+                    ],
+                ],
+            ],
+        ];
+
+        $this->p_awsS3Provider->init($configurations);
+
+        $result = $this->p_awsS3Provider->urlGenerator($this->path);
+
+        assertEquals($this->cloudfront_url_noscheme, $result);
     }
 
     public function testEmptyUrlGenerator()
