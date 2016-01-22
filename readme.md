@@ -270,6 +270,9 @@ The MIT License (MIT). Please see [License File](https://github.com/publiux/lara
 
 ## Changelog
 
+#### v1.0.3
+- Fixed bug where schemeless Urls could not be used for CloudFront. Valid urls now begin with http, https, or simply '//'
+
 #### v1.0.2
 - Fixed bug where the elixir function was inadvertently omitted from the release.
 
