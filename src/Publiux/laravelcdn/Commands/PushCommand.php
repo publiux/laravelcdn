@@ -11,6 +11,7 @@ use Publiux\laravelcdn\Contracts\CdnInterface;
  * @category Command
  *
  * @author   Mahmoud Zalt <mahmoud@vinelab.com>
+ * @author   Raul Ruiz <publiux@gmail.com>
  */
 class PushCommand extends Command
 {
@@ -19,7 +20,7 @@ class PushCommand extends Command
      *
      * @var string
      */
-    protected $name = 'cdn:push';
+    protected $signature = 'cdn:push';
 
     /**
      * The console command description.
@@ -50,32 +51,8 @@ class PushCommand extends Command
      *
      * @return mixed
      */
-    public function fire()
+    public function handle()
     {
         $this->cdn->push();
-    }
-
-    /**
-     * Get the console command arguments.
-     *
-     * @return array
-     */
-    protected function getArguments()
-    {
-        return [
-//			array('cdn', InputArgument::OPTIONAL, 'cdn option.'),
-        ];
-    }
-
-    /**
-     * Get the console command options.
-     *
-     * @return array
-     */
-    protected function getOptions()
-    {
-        return [
-//			array('example', null, InputOption::VALUE_OPTIONAL, 'An example option.', null),
-        ];
     }
 }
