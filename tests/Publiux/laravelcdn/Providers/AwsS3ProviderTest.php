@@ -49,48 +49,6 @@ class AwsS3ProviderTest extends TestCase
         $this->m_s3->shouldReceive('execute');
     }
 
-    public function setupNonCloudfrontTest()
-    {
-        $this->m_helper = M::mock('Publiux\laravelcdn\CdnHelper');
-        $this->m_helper->shouldReceive('parseUrl')
-                       ->andReturn(parse_url($this->url));
-
-        $this->p_awsS3Provider = M::mock('\Publiux\laravelcdn\Providers\AwsS3Provider[connect]',
-        [
-            $this->m_console,
-            $this->m_validator,
-            $this->m_helper,
-        ]);
-
-        $this->p_awsS3Provider->setS3Client($this->m_s3);
-
-        $this->p_awsS3Provider->shouldReceive('connect')->andReturn(true);
-    }
-
-    public function setupCloudfrontTest($fullScheme = false)
-    {
-        $this->m_helper = M::mock('Publiux\laravelcdn\CdnHelper');
-
-        if ($fullScheme) {
-            $this->m_helper->shouldReceive('parseUrl')
-                       ->andReturn(parse_url($this->cloudfront_url_fullscheme));
-        } else {
-            $this->m_helper->shouldReceive('parseUrl')
-                       ->andReturn(parse_url($this->cloudfront_url_noscheme));
-        }
-
-        $this->p_awsS3Provider = M::mock('\Publiux\laravelcdn\Providers\AwsS3Provider[connect]',
-        [
-            $this->m_console,
-            $this->m_validator,
-            $this->m_helper,
-        ]);
-
-        $this->p_awsS3Provider->setS3Client($this->m_s3);
-
-        $this->p_awsS3Provider->shouldReceive('connect')->andReturn(true);
-    }
-
     public function tearDown()
     {
         M::close();
@@ -130,6 +88,24 @@ class AwsS3ProviderTest extends TestCase
         $awsS3Provider_obj = $this->p_awsS3Provider->init($configurations);
 
         assertInstanceOf('Publiux\laravelcdn\Providers\AwsS3Provider', $awsS3Provider_obj);
+    }
+
+    public function setupNonCloudfrontTest()
+    {
+        $this->m_helper = M::mock('Publiux\laravelcdn\CdnHelper');
+        $this->m_helper->shouldReceive('parseUrl')
+            ->andReturn(parse_url($this->url));
+
+        $this->p_awsS3Provider = M::mock('\Publiux\laravelcdn\Providers\AwsS3Provider[connect]',
+            [
+                $this->m_console,
+                $this->m_validator,
+                $this->m_helper,
+            ]);
+
+        $this->p_awsS3Provider->setS3Client($this->m_s3);
+
+        $this->p_awsS3Provider->shouldReceive('connect')->andReturn(true);
     }
 
     public function testUploadingAssets()
@@ -243,6 +219,30 @@ class AwsS3ProviderTest extends TestCase
         assertEquals($this->cloudfront_url_fullscheme, $result);
     }
 
+    public function setupCloudfrontTest($fullScheme = false)
+    {
+        $this->m_helper = M::mock('Publiux\laravelcdn\CdnHelper');
+
+        if ($fullScheme) {
+            $this->m_helper->shouldReceive('parseUrl')
+                ->andReturn(parse_url($this->cloudfront_url_fullscheme));
+        } else {
+            $this->m_helper->shouldReceive('parseUrl')
+                ->andReturn(parse_url($this->cloudfront_url_noscheme));
+        }
+
+        $this->p_awsS3Provider = M::mock('\Publiux\laravelcdn\Providers\AwsS3Provider[connect]',
+            [
+                $this->m_console,
+                $this->m_validator,
+                $this->m_helper,
+            ]);
+
+        $this->p_awsS3Provider->setS3Client($this->m_s3);
+
+        $this->p_awsS3Provider->shouldReceive('connect')->andReturn(true);
+    }
+
     public function testUrlGeneratorCloudFrontNoScheme()
     {
         $configurations = [
@@ -260,7 +260,7 @@ class AwsS3ProviderTest extends TestCase
                         'acl'           => 'public-read',
                         'cloudfront'    => [
                             'use'     => true,
-                            'cdn_url' => '//cool.cloudfront.net',
+                            'cdn_url' => 'https://cool.cloudfront.net',
                         ],
                         'metadata'      => [],
                         'expires'       => gmdate('D, d M Y H:i:s T', strtotime('+5 years')),
