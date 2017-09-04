@@ -36,7 +36,7 @@
             "tests/TestCase.php",
             "src/Publiux/laravelcdn/Exceptions"
         ],
-      "psr-4": {
+      "psr-0": {
             "Publiux\\laravelcdn\\": "src/"
         }
     },
@@ -46,7 +46,7 @@
         "Publiux\\laravelcdn\\CDNServiceProvider"
       ],
       "aliases": {
-        "CDN": "Publiux\\laravelcdn\\Facades\\CdnFacadeAccessor"
+        "cdn": "Publiux\\laravelcdn\\Facades\\CdnFacadeAccessor"
       }
     }
   },
