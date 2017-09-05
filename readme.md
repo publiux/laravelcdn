@@ -16,8 +16,8 @@ And then it allows him to switch between the local and the online version of the
 This project has been forked from https://github.com/Vinelab/cdn. All credit for the original work goes there.
 
 #### Laravel Support
-- This fork support Laravel 5.2. (`master`).
-- As new versions of Laravel are released, new branches will be created to create compatibility if there are breaking changes in laravel.
+- This fork supports Laravel 5.2 up to an including Laravel 5.5 (`master`).
+- Laravel 5.5 is supported, as is package auto-discovery.
 
 ## Highlights
 
@@ -42,9 +42,9 @@ Require `publiux/laravelcdn` in your project:
 composer require publiux/laravelcdn
 ```
 
-*Since this is a Laravel package we need to register the service provider:*
+*If you are using Laravel 5.4 or below, you need to register the service provider:*
 
-Add the service provider to `config/app.php`:
+Laravel 5.4 and below: Add the service provider to `config/app.php`:
 
 ```php
 'providers' => array(
@@ -52,6 +52,7 @@ Add the service provider to `config/app.php`:
      Publiux\laravelcdn\CdnServiceProvider::class,
 ),
 ```
+*If you are using Laravel 5.5, there is no need to register the service provider as this package is automatically discovered.*
 
 Publish the package config file:
 
