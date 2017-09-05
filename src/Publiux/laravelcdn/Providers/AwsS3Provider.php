@@ -28,9 +28,9 @@ use Symfony\Component\Console\Output\ConsoleOutput;
  * @property string  $acl
  * @property string  $cloudfront
  * @property string  $cloudfront_url
+ * @property string $http
  *
  * @author   Mahmoud Zalt <mahmoud@vinelab.com>
- * @author   Raul Ruiz <publiux@gmail.com>
  */
 class AwsS3Provider extends Provider implements ProviderInterface
 {
@@ -41,17 +41,18 @@ class AwsS3Provider extends Provider implements ProviderInterface
      * @var array
      */
     protected $default = [
-        'url'       => null,
+        'url' => null,
         'threshold' => 10,
         'providers' => [
             'aws' => [
                 's3' => [
-                    'version'    => null,
-                    'region'     => null,
-                    'buckets'    => null,
-                    'acl'        => 'public-read',
+                    'version' => null,
+                    'region' => null,
+                    'buckets' => null,
+                    'http' => null,
+                    'acl' => 'public-read',
                     'cloudfront' => [
-                        'use'     => false,
+                        'use' => false,
                         'cdn_url' => null,
                     ],
                 ],
@@ -69,7 +70,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
     /**
      * this array holds the parsed configuration to be used across the class.
      *
-     * @var array
+     * @var Array
      */
     protected $supplier;
 
@@ -99,7 +100,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
     protected $provider_validator;
 
     /**
-     * @param \Symfony\Component\Console\Output\ConsoleOutput                     $console
+     * @param \Symfony\Component\Console\Output\ConsoleOutput $console
      * @param \Publiux\laravelcdn\Validators\Contracts\ProviderValidatorInterface $provider_validator
      * @param \Publiux\laravelcdn\Contracts\CdnHelperInterface                    $cdn_helper
      */
@@ -125,17 +126,18 @@ class AwsS3Provider extends Provider implements ProviderInterface
     {
         // merge the received config array with the default configurations array to
         // fill missed keys with null or default values.
-        $this->default = array_merge($this->default, $configurations);
+        $this->default = array_replace_recursive($this->default, $configurations);
 
         $supplier = [
-            'provider_url'   => $this->default['url'],
-            'threshold'      => $this->default['threshold'],
-            'version'        => $this->default['providers']['aws']['s3']['version'],
-            'region'         => $this->default['providers']['aws']['s3']['region'],
-            'buckets'        => $this->default['providers']['aws']['s3']['buckets'],
-            'acl'            => $this->default['providers']['aws']['s3']['acl'],
-            'cloudfront'     => $this->default['providers']['aws']['s3']['cloudfront']['use'],
+            'provider_url' => $this->default['url'],
+            'threshold' => $this->default['threshold'],
+            'version' => $this->default['providers']['aws']['s3']['version'],
+            'region' => $this->default['providers']['aws']['s3']['region'],
+            'buckets' => $this->default['providers']['aws']['s3']['buckets'],
+            'acl' => $this->default['providers']['aws']['s3']['acl'],
+            'cloudfront' => $this->default['providers']['aws']['s3']['cloudfront']['use'],
             'cloudfront_url' => $this->default['providers']['aws']['s3']['cloudfront']['cdn_url'],
+            'http' => $this->default['providers']['aws']['s3']['http'],
         ];
 
         // check if any required configuration is missed
@@ -144,29 +146,6 @@ class AwsS3Provider extends Provider implements ProviderInterface
         $this->supplier = $supplier;
 
         return $this;
-    }
-
-    /**
-     * Create an S3 client instance
-     * (Note: it will read the credentials form the .env file).
-     *
-     * @return bool
-     */
-    public function connect()
-    {
-        try {
-            // Instantiate an S3 client
-            $this->setS3Client(new S3Client([
-                        'version' => $this->supplier['version'],
-                        'region'  => $this->supplier['region'],
-                    ]
-                )
-            );
-        } catch (\Exception $e) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -192,22 +171,6 @@ class AwsS3Provider extends Provider implements ProviderInterface
 
         // upload each asset file to the CDN
         if (count($assets) > 0) {
-
-            // Review files before upload if user wishes.
-            /*$review = $this->console->option('review');
-            if ($review) {
-                $this->console->writeln('<fg=green>The files to be uploaded are....</fg=green>');
-                foreach ($assets as $file) {
-                    $this->console->writeln('<fg=cyan>'.$file->getRealpath().'</fg=cyan>');
-                }
-
-                //Ask the user to confirm that they want to continue the upload.
-                if (!$this->console->confirm('Do you wish to continue? [y|N]')) {
-                    $this->console->writeln('<fg=red>Upload cancelled.</fg=cyan>');
-                    return true;
-                }
-            }*/
-
             $this->console->writeln('<fg=yellow>Upload in progress......</fg=yellow>');
             foreach ($assets as $file) {
                 try {
@@ -222,12 +185,13 @@ class AwsS3Provider extends Provider implements ProviderInterface
                         'Body' => fopen($file->getRealPath(), 'r'),
                         // the permission of the file
 
-                        'ACL'          => $this->acl,
+                        'ACL' => $this->acl,
                         'CacheControl' => $this->default['providers']['aws']['s3']['cache-control'],
-                        'MetaData'     => $this->default['providers']['aws']['s3']['metadata'],
-                        'Expires'      => $this->default['providers']['aws']['s3']['expires'],
+                        'Metadata' => $this->default['providers']['aws']['s3']['metadata'],
+                        'Expires' => $this->default['providers']['aws']['s3']['expires'],
                     ]);
 //                var_dump(get_class($command));exit();
+
 
                     $this->s3_client->execute($command);
                 } catch (S3Exception $e) {
@@ -245,6 +209,96 @@ class AwsS3Provider extends Provider implements ProviderInterface
         }
 
         return true;
+    }
+
+    /**
+     * Create an S3 client instance
+     * (Note: it will read the credentials form the .env file).
+     *
+     * @return bool
+     */
+    public function connect()
+    {
+        try {
+            // Instantiate an S3 client
+            $this->setS3Client(new S3Client([
+                        'version' => $this->supplier['version'],
+                        'region' => $this->supplier['region'],
+                        'http' => $this->supplier['http']
+                    ]
+                )
+            );
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param $s3_client
+     */
+    public function setS3Client($s3_client)
+    {
+        $this->s3_client = $s3_client;
+    }
+
+    /**
+     * @param $assets
+     * @return mixed
+     */
+    private function getFilesAlreadyOnBucket($assets)
+    {
+        $filesOnAWS = new Collection([]);
+
+        $files = $this->s3_client->listObjects([
+            'Bucket' => $this->getBucket(),
+        ]);
+
+        if (!$files['Contents']) {
+            //no files on bucket. lets upload everything found.
+            return $assets;
+        }
+
+        foreach ($files['Contents'] as $file) {
+            $a = [
+                'Key' => $file['Key'],
+                "LastModified" => $file['LastModified']->getTimestamp(),
+                'Size' => $file['Size']
+            ];
+            $filesOnAWS->put($file['Key'], $a);
+        }
+
+        $assets->transform(function ($item, $key) use (&$filesOnAWS) {
+            $fileOnAWS = $filesOnAWS->get(str_replace('\\', '/', $item->getPathName()));
+
+            //select to upload files that are different in size AND last modified time.
+            if (!($item->getMTime() === $fileOnAWS['LastModified']) && !($item->getSize() === $fileOnAWS['Size'])) {
+                return $item;
+            }
+        });
+
+        $assets = $assets->reject(function ($item) {
+            return $item === null;
+        });
+
+        return $assets;
+    }
+
+    /**
+     * @return array
+     */
+    public function getBucket()
+    {
+        // this step is very important, "always assign returned array from
+        // magical function to a local variable if you need to modify it's
+        // state or apply any php function on it." because the returned is
+        // a copy of the original variable. this prevent this error:
+        // Indirect modification of overloaded property
+        // Vinelab\Cdn\Providers\AwsS3Provider::$buckets has no effect
+        $bucket = $this->buckets;
+
+        return rtrim(key($bucket), '/');
     }
 
     /**
@@ -270,7 +324,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
             // Get the contents of the bucket for information purposes
             $contents = $this->s3_client->listObjects([
                 'Bucket' => $this->getBucket(),
-                'Key'    => '',
+                'Key' => '',
             ]);
 
             // Check if the bucket is already empty
@@ -311,11 +365,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
         if ($this->getCloudFront() === true) {
             $url = $this->cdn_helper->parseUrl($this->getCloudFrontUrl());
 
-            if (array_key_exists('scheme', $url)) {
-                return $url['scheme'].'://'.$url['host'].'/'.$path;
-            } else {
-                return '//'.$url['host'].'/'.$path;
-            }
+            return $url['scheme'] . '://' . $url['host'] . '/' . $path;
         }
 
         $url = $this->cdn_helper->parseUrl($this->getUrl());
@@ -323,27 +373,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
         $bucket = $this->getBucket();
         $bucket = (!empty($bucket)) ? $bucket.'.' : '';
 
-        if (array_key_exists('scheme', $url)) {
-            return $url['scheme'].'://'.$bucket.$url['host'].'/'.$path;
-        } else {
-            return '//'.$bucket.$url['host'].'/'.$path;
-        }
-    }
-
-    /**
-     * @param $s3_client
-     */
-    public function setS3Client($s3_client)
-    {
-        $this->s3_client = $s3_client;
-    }
-
-    /**
-     * @return string
-     */
-    public function getUrl()
-    {
-        return rtrim($this->provider_url, '/').'/';
+        return $url['scheme'] . '://' . $bucket . $url['host'] . '/' . $path;
     }
 
     /**
@@ -367,19 +397,11 @@ class AwsS3Provider extends Provider implements ProviderInterface
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getBucket()
+    public function getUrl()
     {
-        // this step is very important, "always assign returned array from
-        // magical function to a local variable if you need to modify it's
-        // state or apply any php function on it." because the returned is
-        // a copy of the original variable. this prevent this error:
-        // Indirect modification of overloaded property
-        // Publiux\laravelcdn\Providers\AwsS3Provider::$buckets has no effect
-        $bucket = $this->buckets;
-
-        return rtrim(key($bucket), '/');
+        return rtrim($this->provider_url, '/') . '/';
     }
 
     /**
@@ -390,44 +412,5 @@ class AwsS3Provider extends Provider implements ProviderInterface
     public function __get($attr)
     {
         return isset($this->supplier[$attr]) ? $this->supplier[$attr] : null;
-    }
-
-    /**
-     * @param $assets
-     *
-     * @return mixed
-     */
-    private function getFilesAlreadyOnBucket($assets)
-    {
-        $filesOnAWS = new Collection([]);
-
-        $files = $this->s3_client->listObjects([
-            'Bucket' => $this->getBucket(),
-        ]);
-
-        if (!$files['Contents']) {
-            //no files on bucket. lets upload everything found.
-            return $assets;
-        }
-
-        foreach ($files['Contents'] as $file) {
-            $a = ['Key' => $file['Key'], 'LastModified' => $file['LastModified']->getTimestamp(), 'Size' => $file['Size']];
-            $filesOnAWS->put($file['Key'], $a);
-        }
-
-        $assets->transform(function ($item, $key) use (&$filesOnAWS) {
-            $fileOnAWS = $filesOnAWS->get(str_replace('\\', '/', $item->getPathName()));
-
-            //select to upload files that are different in size AND last modified time.
-            if (!($item->getMTime() === $fileOnAWS['LastModified']) && !($item->getSize() === $fileOnAWS['Size'])) {
-                return $item;
-            }
-        });
-
-        $assets = $assets->reject(function ($item) {
-            return $item === null;
-        });
-
-        return $assets;
     }
 }

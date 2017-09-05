@@ -95,14 +95,14 @@ class CdnServiceProvider extends ServiceProvider
 
         // register the commands:
         //-----------------------
-        $this->app['cdn.push'] = $this->app->share(function () {
-            return $this->app->make('Publiux\laravelcdn\Commands\PushCommand');
+        $this->app->singleton('cdn.push', function ($app) {
+            return $app->make('Publiux\laravelcdn\Commands\PushCommand');
         });
 
         $this->commands('cdn.push');
 
-        $this->app['cdn.empty'] = $this->app->share(function () {
-            return $this->app->make('Publiux\laravelcdn\Commands\EmptyCommand');
+        $this->app->singleton('cdn.empty', function ($app) {
+            return $app->make('Publiux\laravelcdn\Commands\EmptyCommand');
         });
 
         $this->commands('cdn.empty');
@@ -111,15 +111,15 @@ class CdnServiceProvider extends ServiceProvider
         //-----------------
 
         // Register 'CdnFacade' instance container to our CdnFacade object
-        $this->app['cdn'] = $this->app->share(function () {
-            return $this->app->make('Publiux\laravelcdn\CdnFacade');
+        $this->app->singleton('CDN', function ($app) {
+            return $app->make('Publiux\laravelcdn\CdnFacade');
         });
 
         // Shortcut so developers don't need to add an Alias in app/config/app.php
-        $this->app->booting(function () {
-            $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-            $loader->alias('Cdn', 'Publiux\laravelcdn\Facades\CdnFacadeAccessor');
-        });
+//        $this->app->booting(function () {
+//            $loader = \Illuminate\Foundation\AliasLoader::getInstance();
+//            $loader->alias('Cdn', 'Publiux\laravelcdn\Facades\CdnFacadeAccessor');
+//        });
     }
 
     /**
