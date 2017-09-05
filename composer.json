@@ -46,7 +46,7 @@
         "Publiux\\laravelcdn\\CDNServiceProvider"
       ],
       "aliases": {
-        "cdn": "Publiux\\laravelcdn\\Facades\\CdnFacadeAccessor"
+        "CDN": "Publiux\\laravelcdn\\Facades\\CdnFacadeAccessor"
       }
     }
   },
