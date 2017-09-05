@@ -111,7 +111,7 @@ class CdnServiceProvider extends ServiceProvider
         //-----------------
 
         // Register 'CdnFacade' instance container to our CdnFacade object
-        $this->app->singleton('cdn', function ($app) {
+        $this->app->singleton('CDN', function ($app) {
             return $app->make('Publiux\laravelcdn\CdnFacade');
         });
 
