@@ -43,7 +43,7 @@
   "extra": {
     "laravel": {
       "providers": [
-        "Publiux\\laravelcdn\\CDNServiceProvider"
+        "Publiux\\laravelcdn\\CdnServiceProvider"
       ],
       "aliases": {
         "CDN": "Publiux\\laravelcdn\\Facades\\CdnFacadeAccessor"
