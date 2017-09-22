@@ -44,7 +44,7 @@ composer require "publiux/laravelcdn:~2.0"
 
 *If you are using Laravel 5.4 or below, you need to register the service provider:*
 
-Laravel 5.4 and below: Add the service provider to `config/app.php`:
+Laravel 5.4 and below: Add the service provider and facade to `config/app.php`:
 
 ```php
 'providers' => array(
@@ -52,6 +52,14 @@ Laravel 5.4 and below: Add the service provider to `config/app.php`:
      Publiux\laravelcdn\CdnServiceProvider::class,
 ),
 ```
+
+```php
+'aliases' => array(
+     //...
+     'Cdn' => Publiux\laravelcdn\Facades\CdnFacadeAccessor::class
+),
+```
+
 *If you are using Laravel 5.5, there is no need to register the service provider as this package is automatically discovered.*
 
 Publish the package config file:
