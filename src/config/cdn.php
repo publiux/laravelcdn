@@ -117,6 +117,25 @@ return [
                     //   'your-js-bucket-name-here'   =>  ['public/js'],
                     //   'your-css-bucket-name-here'  =>  ['public/css'],
                 ],
+                
+                /*
+                |--------------------------------------------------------------------------
+                | CDN Bucket Upload Folder Prefix
+                |--------------------------------------------------------------------------
+                |
+                | You can specify a prefix for files when they are pushed/uploaded to S3.
+                | For example, if you want to have your files uploaded into a folder in the
+                | called 'webassets', you would specify 'webassets/'.
+                |
+                | When the command 'php artisan cdn:push' is run, your assets will be
+                | uploaded to S3, but will be placed inside this folder.
+                |
+                | If you do not wish to set this prefix, leave an empty string as the value.
+                |
+                | NOTE: YOUR FOLDER NAME PREFIX MUST END WITH A TRAILING SLASH, e.g. 'folder/'
+                |
+                */
+                'upload_folder' => env('AWS_CDN_ASSET_UPLOAD_FOLDER', ''),
 
                 /*
                 |--------------------------------------------------------------------------

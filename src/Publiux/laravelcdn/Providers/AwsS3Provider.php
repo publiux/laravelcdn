@@ -49,6 +49,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
                     'version' => null,
                     'region' => null,
                     'buckets' => null,
+                    'upload_folder' => '',
                     'http' => null,
                     'acl' => 'public-read',
                     'cloudfront' => [
@@ -138,6 +139,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
             'cloudfront' => $this->default['providers']['aws']['s3']['cloudfront']['use'],
             'cloudfront_url' => $this->default['providers']['aws']['s3']['cloudfront']['cdn_url'],
             'http' => $this->default['providers']['aws']['s3']['http'],
+            'upload_folder' => $this->default['providers']['aws']['s3']['upload_folder']
         ];
 
         // check if any required configuration is missed
@@ -180,7 +182,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
                         // the bucket name
                         'Bucket' => $this->getBucket(),
                         // the path of the file on the server (CDN)
-                        'Key' => str_replace('\\', '/', $file->getPathName()),
+                        'Key' => $this->supplier['upload_folder'] . str_replace('\\', '/', $file->getPathName()),
                         // the path of the path locally
                         'Body' => fopen($file->getRealPath(), 'r'),
                         // the permission of the file
