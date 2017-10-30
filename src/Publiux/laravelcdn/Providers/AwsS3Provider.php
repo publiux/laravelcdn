@@ -49,7 +49,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
                     'version' => null,
                     'region' => null,
                     'buckets' => null,
-                    'upload_folder' => ''
+                    'upload_folder' => '',
                     'http' => null,
                     'acl' => 'public-read',
                     'cloudfront' => [
