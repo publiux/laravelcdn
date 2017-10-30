@@ -210,6 +210,9 @@ Upload assets to CDN
 ```bash
 php artisan cdn:push
 ```
+
+You can specify a folder upload prefix in the cdn.php config file. Your assets will be uploaded into that folder on S3.
+
 #### Empty
 
 Delete assets from CDN
