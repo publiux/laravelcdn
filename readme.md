@@ -219,6 +219,7 @@ Delete assets from CDN
 ```bash
 php artisan cdn:empty
 ```
+CAUTION: This will erase your entire bucket. This may not be what you want if you are specifying an upload folder when you push your assets.
 
 #### Load Assets
 
