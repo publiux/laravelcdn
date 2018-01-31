@@ -20,38 +20,31 @@ This project has been forked from https://github.com/publiux/laravelcdn. All cre
 - Artisan command to upload content to CDN
 - Simple Facade to access CDN assets
 
-
-### Questions
-1. Is this package an alternative to Laravel FileSystem and do they work together?
-
-+ No, the package was introduced in Laravel 4 and it's main purpose is to manage your CDN assets by loading them from the CDN into your Views pages, and easily switch between your Local and CDN version of the files. As well it allows you to upload all your assets with single command after specifying the assets directory and rules. The FileSystem was introduced in Laravel 5 and it's designed to facilitate the loading/uploading of files form/to a CDN. It can be used the same way as this Package for loading assets from the CDN, but it's harder to upload your assets to the CDN since it expect you to upload your files one by one. As a result this package still not a replacement of the Laravel FileSystem and they can be used together.
-
-
 ## Installation
 
 #### Via Composer
 
-Require `Rehmatworks/laravelcdn` in your project:
+Require `rehmatworks/laravelcdn` in your project:
 
 ```bash 
-composer require "Rehmatworks/laravelcdn:~2.0"
+composer require "rehmatworks/laravelcdn"
 ```
 
-*If you are using Laravel 5.4 or below, you need to register the service provider:*
+* If you are using Laravel 5.4 or below, you need to register the service provider:*
 
 Laravel 5.4 and below: Add the service provider and facade to `config/app.php`:
 
 ```php
 'providers' => array(
      //...
-     Rehmatworks\laravelcdn\CdnServiceProvider::class,
+     rehmatworks\laravelcdn\CdnServiceProvider::class,
 ),
 ```
 
 ```php
 'aliases' => array(
      //...
-     'Cdn' => Rehmatworks\laravelcdn\Facades\CdnFacadeAccessor::class
+     'Cdn' => rehmatworks\laravelcdn\Facades\CdnFacadeAccessor::class
 ),
 ```
 
@@ -60,7 +53,7 @@ Laravel 5.4 and below: Add the service provider and facade to `config/app.php`:
 Publish the package config file:
 
 ```bash
-php artisan vendor:publish --provider 'Rehmatworks\laravelcdn\CdnServiceProvider'
+php artisan vendor:publish --provider 'rehmatworks\laravelcdn\CdnServiceProvider'
 ```
 
 ## Environment Configuration
@@ -84,18 +77,6 @@ Set the CDN URL:
 
 ```php
 'url' => env('CDN_Url', 'https://s3.amazonaws.com'),
-```
-
-Set the Endpoint URL:
-
-```php
-'endpoint' => env('AWS_ENDPOINT', null),
-```
-
-This can altered in your '.env' file as follows:
-
-```bash
-AWS_ENDPOINT=
 ```
 
 ##### Bypass
