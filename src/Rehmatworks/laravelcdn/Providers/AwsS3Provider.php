@@ -67,7 +67,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
      *
      * @var array
      */
-    protected $rules = ['version', 'endpoint', 'region', 'key', 'secret', 'buckets', 'url'];
+    protected $rules = ['version', 'region', 'key', 'secret', 'buckets', 'url'];
 
     /**
      * this array holds the parsed configuration to be used across the class.
