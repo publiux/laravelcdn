@@ -1,6 +1,6 @@
 <?php
 
-namespace Publiux\laravelcdn\Tests;
+namespace Rehmatworks\laravelcdn\Tests;
 
 use Mockery as M;
 
@@ -17,7 +17,7 @@ class AssetTest extends TestCase
     {
         parent::setUp();
 
-        $this->asset = new \Publiux\laravelcdn\Asset();
+        $this->asset = new \Rehmatworks\laravelcdn\Asset();
     }
 
     public function tearDown()
@@ -36,7 +36,7 @@ class AssetTest extends TestCase
             ],
         ]);
 
-        // check the returned object is of type Publiux\laravelcdn\Asset
+        // check the returned object is of type Rehmatworks\laravelcdn\Asset
         assertEquals($result, $this->asset);
     }
 

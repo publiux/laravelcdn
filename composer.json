@@ -1,5 +1,5 @@
 {
-    "name": "publiux/laravelcdn",
+    "name": "rehmatworks/laracdn",
     "description": "Content Delivery Network (CDN) Package for Laravel",
     "license": "MIT",
     "keywords": [
@@ -10,13 +10,15 @@
       "S3",
       "AWS S3",
       "amazon",
+      "spaces",
+      "digitalocean",
       "Assets Upload",
       "Content Delivery Network"
     ],
     "authors": [
         {
-            "name": "Raul Ruiz",
-            "email": "publiux@gmail.com"
+            "name": "Rehmat Alam",
+            "email": "contact@rehmat.works"
         }
     ],
     "require": {
@@ -34,19 +36,19 @@
     "autoload": {
         "classmap": [
             "tests/TestCase.php",
-            "src/Publiux/laravelcdn/Exceptions"
+            "src/Rehmatworks/laravelcdn/Exceptions"
         ],
       "psr-0": {
-            "Publiux\\laravelcdn\\": "src/"
+            "Rehmatworks\\laravelcdn\\": "src/"
         }
     },
   "extra": {
     "laravel": {
       "providers": [
-        "Publiux\\laravelcdn\\CdnServiceProvider"
+        "Rehmatworks\\laravelcdn\\CdnServiceProvider"
       ],
       "aliases": {
-        "CDN": "Publiux\\laravelcdn\\Facades\\CdnFacadeAccessor"
+        "CDN": "Rehmatworks\\laravelcdn\\Facades\\CdnFacadeAccessor"
       }
     }
   },

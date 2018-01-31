@@ -1,6 +1,6 @@
 <?php
 
-namespace Publiux\laravelcdn\Tests;
+namespace Rehmatworks\laravelcdn\Tests;
 
 use Illuminate\Support\Collection;
 use Mockery as M;
@@ -27,7 +27,7 @@ class FinderTest extends TestCase
 
     public function testReadReturnCorrectDataType()
     {
-        $asset_holder = new \Publiux\laravelcdn\Asset();
+        $asset_holder = new \Rehmatworks\laravelcdn\Asset();
 
         $asset_holder->init([
             'include' => [
@@ -39,7 +39,7 @@ class FinderTest extends TestCase
         $console_output->shouldReceive('writeln')
             ->atLeast(1);
 
-        $finder = new \Publiux\laravelcdn\Finder($console_output);
+        $finder = new \Rehmatworks\laravelcdn\Finder($console_output);
 
         $result = $finder->read($asset_holder);
 
@@ -53,7 +53,7 @@ class FinderTest extends TestCase
      */
     public function testReadThrowsException()
     {
-        $asset_holder = new \Publiux\laravelcdn\Asset();
+        $asset_holder = new \Rehmatworks\laravelcdn\Asset();
 
         $asset_holder->init(['include' => []]);
 
@@ -61,7 +61,7 @@ class FinderTest extends TestCase
         $console_output->shouldReceive('writeln')
             ->atLeast(1);
 
-        $finder = new \Publiux\laravelcdn\Finder($console_output);
+        $finder = new \Rehmatworks\laravelcdn\Finder($console_output);
 
         $finder->read($asset_holder);
     }
