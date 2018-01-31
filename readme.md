@@ -50,7 +50,7 @@ Laravel 5.4 and below: Add the service provider and facade to `config/app.php`:
 Publish the package config file:
 
 ```bash
-php artisan vendor:publish --provider 'rehmatworks\laracdn\CdnServiceProvider'
+php artisan vendor:publish --provider 'Rehmatworks\laravelcdn\CdnServiceProvider'
 ```
 
 ## Environment Configuration
