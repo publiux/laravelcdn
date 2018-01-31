@@ -1,6 +1,6 @@
 <?php
 
-namespace Publiux\laravelcdn\Tests;
+namespace Rehmatworks\laravelcdn\Tests;
 
 use Illuminate\Support\Collection;
 use Mockery as M;
@@ -29,7 +29,7 @@ class CdnTest extends TestCase
 
     public function testPushCommandReturnTrue()
     {
-        $this->m_asset = M::mock('Publiux\laravelcdn\Contracts\AssetInterface');
+        $this->m_asset = M::mock('Rehmatworks\laravelcdn\Contracts\AssetInterface');
         $this->m_asset->shouldReceive('init')
             ->once()
             ->andReturn($this->m_asset);
@@ -40,28 +40,28 @@ class CdnTest extends TestCase
             ->once()
             ->andReturn(new Collection());
 
-        $this->m_finder = M::mock('Publiux\laravelcdn\Contracts\FinderInterface');
+        $this->m_finder = M::mock('Rehmatworks\laravelcdn\Contracts\FinderInterface');
         $this->m_finder->shouldReceive('read')
             ->with($this->m_asset)
             ->once()
             ->andReturn(new Collection());
 
-        $this->m_provider = M::mock('Publiux\laravelcdn\Providers\Provider');
+        $this->m_provider = M::mock('Rehmatworks\laravelcdn\Providers\Provider');
         $this->m_provider->shouldReceive('upload')
             ->once()
             ->andReturn(true);
 
-        $this->m_provider_factory = M::mock('Publiux\laravelcdn\Contracts\ProviderFactoryInterface');
+        $this->m_provider_factory = M::mock('Rehmatworks\laravelcdn\Contracts\ProviderFactoryInterface');
         $this->m_provider_factory->shouldReceive('create')
             ->once()
             ->andReturn($this->m_provider);
 
-        $this->m_helper = M::mock('Publiux\laravelcdn\Contracts\CdnHelperInterface');
+        $this->m_helper = M::mock('Rehmatworks\laravelcdn\Contracts\CdnHelperInterface');
         $this->m_helper->shouldReceive('getConfigurations')
             ->once()
             ->andReturn([]);
 
-        $this->cdn = new \Publiux\laravelcdn\Cdn(
+        $this->cdn = new \Rehmatworks\laravelcdn\Cdn(
             $this->m_finder,
             $this->m_asset,
             $this->m_provider_factory,
@@ -123,11 +123,11 @@ class CdnTest extends TestCase
         $m_consol->shouldReceive('writeln')
             ->atLeast(1);
 
-        $finder = new \Publiux\laravelcdn\Finder($m_consol);
+        $finder = new \Rehmatworks\laravelcdn\Finder($m_consol);
 
-        $asset = new \Publiux\laravelcdn\Asset();
+        $asset = new \Rehmatworks\laravelcdn\Asset();
 
-        $provider_factory = new \Publiux\laravelcdn\ProviderFactory();
+        $provider_factory = new \Rehmatworks\laravelcdn\ProviderFactory();
 
         $m_config = M::mock('Illuminate\Config\Repository');
         $m_config->shouldReceive('get')
@@ -135,25 +135,25 @@ class CdnTest extends TestCase
             ->once()
             ->andReturn($configuration_file);
 
-        $helper = new \Publiux\laravelcdn\CdnHelper($m_config);
+        $helper = new \Rehmatworks\laravelcdn\CdnHelper($m_config);
 
         $m_console = M::mock('Symfony\Component\Console\Output\ConsoleOutput');
         $m_console->shouldReceive('writeln')
             ->atLeast(2);
 
-        $m_validator = M::mock('Publiux\laravelcdn\Validators\Contracts\ProviderValidatorInterface');
+        $m_validator = M::mock('Rehmatworks\laravelcdn\Validators\Contracts\ProviderValidatorInterface');
         $m_validator->shouldReceive('validate');
 
-        $m_helper = M::mock('Publiux\laravelcdn\CdnHelper');
+        $m_helper = M::mock('Rehmatworks\laravelcdn\CdnHelper');
 
         $m_spl_file = M::mock('Symfony\Component\Finder\SplFileInfo');
         $m_spl_file->shouldReceive('getPathname')
-            ->andReturn('Publiux\laravelcdn/tests/Publiux/laravelcdn/AwsS3ProviderTest.php');
+            ->andReturn('Rehmatworks\laravelcdn/tests/Rehmatworks/laravelcdn/AwsS3ProviderTest.php');
         $m_spl_file->shouldReceive('getRealPath')
             ->andReturn(__DIR__.'/AwsS3ProviderTest.php');
 
         // partial mock
-        $p_aws_s3_provider = M::mock('\Publiux\laravelcdn\Providers\AwsS3Provider[connect]', 
+        $p_aws_s3_provider = M::mock('\Rehmatworks\laravelcdn\Providers\AwsS3Provider[connect]', 
         [
             $m_console,
             $m_validator,
@@ -177,7 +177,7 @@ class CdnTest extends TestCase
             ->once()
             ->andReturn($p_aws_s3_provider);
 
-        $cdn = new \Publiux\laravelcdn\Cdn($finder,
+        $cdn = new \Rehmatworks\laravelcdn\Cdn($finder,
             $asset,
             $provider_factory,
             $helper

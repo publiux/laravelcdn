@@ -1,19 +1,13 @@
 # Laravel CDN Assets Manager
 
-[![Latest Stable Version](https://poser.pugx.org/publiux/laravelcdn/v/stable)](https://packagist.org/packages/publiux/laravelcdn)
-[![Total Downloads](https://poser.pugx.org/publiux/laravelcdn/downloads)](https://packagist.org/packages/publiux/laravelcdn)
-[![Build Status](https://travis-ci.org/publiux/laravelcdn.svg)](https://travis-ci.org/publiux/laravelcdn)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/publiux/laravelcdn/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/publiux/laravelcdn/?branch=master)
-[![License](https://poser.pugx.org/publiux/laravelcdn/license)](https://packagist.org/packages/publiux/laravelcdn)
-
-
 ##### Content Delivery Network Package for Laravel
 
 The package provides the developer the ability to upload their assets (or any public file) to a CDN with a single artisan command.
+
 And then it allows them to switch between the local and the online version of the files.
 
-###### Fork From [Vinelab/cdn](https://github.com/Vinelab/cdn)
-This project has been forked from https://github.com/Vinelab/cdn. All credit for the original work goes there.
+###### Fork From [Publiux/laravelcdn](https://github.com/publiux/laravelcdn/)
+This project has been forked from https://github.com/publiux/laravelcdn. All credit for the original work goes there.
 
 #### Laravel Support
 - This fork supports Laravel 5.2 up to an including Laravel 5.5 (`master`).
@@ -22,6 +16,7 @@ This project has been forked from https://github.com/Vinelab/cdn. All credit for
 ## Highlights
 
 - Amazon Web Services - S3
+- Digitalocean Spaces
 - Artisan command to upload content to CDN
 - Simple Facade to access CDN assets
 
@@ -36,10 +31,10 @@ This project has been forked from https://github.com/Vinelab/cdn. All credit for
 
 #### Via Composer
 
-Require `publiux/laravelcdn` in your project:
+Require `Rehmatworks/laravelcdn` in your project:
 
 ```bash 
-composer require "publiux/laravelcdn:~2.0"
+composer require "Rehmatworks/laravelcdn:~2.0"
 ```
 
 *If you are using Laravel 5.4 or below, you need to register the service provider:*
@@ -49,14 +44,14 @@ Laravel 5.4 and below: Add the service provider and facade to `config/app.php`:
 ```php
 'providers' => array(
      //...
-     Publiux\laravelcdn\CdnServiceProvider::class,
+     Rehmatworks\laravelcdn\CdnServiceProvider::class,
 ),
 ```
 
 ```php
 'aliases' => array(
      //...
-     'Cdn' => Publiux\laravelcdn\Facades\CdnFacadeAccessor::class
+     'Cdn' => Rehmatworks\laravelcdn\Facades\CdnFacadeAccessor::class
 ),
 ```
 
@@ -65,7 +60,7 @@ Laravel 5.4 and below: Add the service provider and facade to `config/app.php`:
 Publish the package config file:
 
 ```bash
-php artisan vendor:publish --provider 'Publiux\laravelcdn\CdnServiceProvider'
+php artisan vendor:publish --provider 'Rehmatworks\laravelcdn\CdnServiceProvider'
 ```
 
 ## Environment Configuration
@@ -81,6 +76,7 @@ Set your AWS Credentials and other settings in the `.env` file.
 AWS_ACCESS_KEY_ID=
 AWS_SECRET_ACCESS_KEY=
 ```
+Configure further settings in `config/cdn.php`.
 
 ##### CDN URL
 
@@ -90,10 +86,16 @@ Set the CDN URL:
 'url' => env('CDN_Url', 'https://s3.amazonaws.com'),
 ```
 
+Set the Endpoint URL:
+
+```php
+'endpoint' => env('AWS_ENDPOINT', null),
+```
+
 This can altered in your '.env' file as follows:
 
 ```bash
-CDN_Url=
+AWS_ENDPOINT=
 ```
 
 ##### Bypass
@@ -142,7 +144,7 @@ For now, the only CDN provider available is AwsS3. This option cannot be set in 
     
         'version'   => 'latest',
         'region'    => '',
-
+        'endpoint' => null,
         'buckets' => [
             'my-backup-bucket' => '*',
         ]
@@ -270,19 +272,19 @@ $ ./vendor/bin/phpunit
 
 ## Support
 
-Please request support or submit issues [via Github](https://github.com/publiux/laravelcdn/issues)
+Please request support or submit issues [via Github](https://github.com/Rehmatworks/laravelcdn/issues)
 
 
 ## Contributing
 
-Please see [CONTRIBUTING](https://github.com/publiux/laravelcdn/blob/master/CONTRIBUTING.md) for details.
+Please see [CONTRIBUTING](https://github.com/Rehmatworks/laravelcdn/blob/master/CONTRIBUTING.md) for details.
 
 ## Security Related Issues
 
-If you discover any security related issues, please email publiux@gmail.com instead of using the issue tracker for faster response. You should open an issue at the same time.
+If you discover any security related issues, please email Rehmatworks@gmail.com instead of using the issue tracker for faster response. You should open an issue at the same time.
 
 ## Credits
-- [Raul Ruiz](https://github.com/publiux) (forker)
+- [Raul Ruiz](https://github.com/Rehmatworks) (forker)
 - [Mahmoud Zalt](https://github.com/Mahmoudz) (original developer)
 - [Filipe Garcia](https://github.com/filipegar) (contributred pre-fork, uncredited pull request for duplicate uploading verification)
 - [Contributors from original project](https://github.com/Vinelab/cdn/graphs/contributors)
@@ -291,7 +293,7 @@ If you discover any security related issues, please email publiux@gmail.com inst
 
 ## License
 
-The MIT License (MIT). Please see [License File](https://github.com/publiux/laravelcdn/blob/master/LICENSE) for more information.
+The MIT License (MIT). Please see [License File](https://github.com/Rehmatworks/laravelcdn/blob/master/LICENSE) for more information.
 
 ## Changelog
 

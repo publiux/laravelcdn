@@ -1,6 +1,6 @@
 <?php
 
-namespace Publiux\laravelcdn\Tests;
+namespace Rehmatworks\laravelcdn\Tests;
 
 use Mockery as M;
 
@@ -57,19 +57,19 @@ class CdnFacadeTest extends TestCase
         $this->path_path = 'public/foo/bar.php';
         $this->asset_url = 'https://bucket.s3.amazonaws.com/public/foo/bar.php';
 
-        $this->provider = M::mock('Publiux\laravelcdn\Providers\AwsS3Provider');
+        $this->provider = M::mock('Rehmatworks\laravelcdn\Providers\AwsS3Provider');
 
-        $this->provider_factory = M::mock('Publiux\laravelcdn\Contracts\ProviderFactoryInterface');
+        $this->provider_factory = M::mock('Rehmatworks\laravelcdn\Contracts\ProviderFactoryInterface');
         $this->provider_factory->shouldReceive('create')->once()->andReturn($this->provider);
 
-        $this->helper = M::mock('Publiux\laravelcdn\Contracts\CdnHelperInterface');
+        $this->helper = M::mock('Rehmatworks\laravelcdn\Contracts\CdnHelperInterface');
         $this->helper->shouldReceive('getConfigurations')->once()->andReturn($configuration_file);
         $this->helper->shouldReceive('cleanPath')->andReturn($this->asset_path);
         $this->helper->shouldReceive('startsWith')->andReturn(true);
 
-        $this->validator = new \Publiux\laravelcdn\Validators\CdnFacadeValidator();
+        $this->validator = new \Rehmatworks\laravelcdn\Validators\CdnFacadeValidator();
 
-        $this->facade = new \Publiux\laravelcdn\CdnFacade(
+        $this->facade = new \Rehmatworks\laravelcdn\CdnFacade(
             $this->provider_factory, $this->helper, $this->validator);
     }
 
@@ -102,7 +102,7 @@ class CdnFacadeTest extends TestCase
     }
 
     /**
-     * @expectedException \Publiux\laravelcdn\Exceptions\EmptyPathException
+     * @expectedException \Rehmatworks\laravelcdn\Exceptions\EmptyPathException
      */
     public function testUrlGeneratorThrowsException()
     {

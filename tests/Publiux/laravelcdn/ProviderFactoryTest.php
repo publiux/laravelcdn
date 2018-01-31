@@ -1,6 +1,6 @@
 <?php
 
-namespace Publiux\laravelcdn\Tests;
+namespace Rehmatworks\laravelcdn\Tests;
 
 use Mockery as M;
 
@@ -17,7 +17,7 @@ class ProviderFactoryTest extends TestCase
     {
         parent::setUp();
 
-        $this->provider_factory = new \Publiux\laravelcdn\ProviderFactory();
+        $this->provider_factory = new \Rehmatworks\laravelcdn\ProviderFactory();
     }
 
     public function tearDown()
@@ -30,7 +30,7 @@ class ProviderFactoryTest extends TestCase
     {
         $configurations = ['default' => 'AwsS3'];
 
-        $m_aws_s3 = M::mock('Publiux\laravelcdn\Providers\AwsS3Provider');
+        $m_aws_s3 = M::mock('Rehmatworks\laravelcdn\Providers\AwsS3Provider');
 
         \Illuminate\Support\Facades\App::shouldReceive('make')->once()->andReturn($m_aws_s3);
 
@@ -45,13 +45,13 @@ class ProviderFactoryTest extends TestCase
     }
 
     /**
-     * @expectedException \Publiux\laravelcdn\Exceptions\MissingConfigurationException
+     * @expectedException \Rehmatworks\laravelcdn\Exceptions\MissingConfigurationException
      */
     public function testCreateThrowsExceptionWhenMissingDefaultConfiguration()
     {
         $configurations = ['default' => ''];
 
-        $m_aws_s3 = M::mock('Publiux\laravelcdn\Providers\AwsS3Provider');
+        $m_aws_s3 = M::mock('Rehmatworks\laravelcdn\Providers\AwsS3Provider');
 
         \Illuminate\Support\Facades\App::shouldReceive('make')->once()->andReturn($m_aws_s3);
 

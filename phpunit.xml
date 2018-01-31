@@ -12,7 +12,7 @@
 >
     <testsuites>
         <testsuite name="CDN Package Test Suite">
-            <directory suffix=".php">./tests/Publiux</directory>
+            <directory suffix=".php">./tests/Rehmatworks</directory>
         </testsuite>
     </testsuites>
 
