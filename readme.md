@@ -21,7 +21,8 @@ This project has been forked from https://github.com/Vinelab/cdn. All credit for
 
 ## Highlights
 
-- Amazon Web Services - S3
+- Amazon Web Services (AWS) - S3
+- DigitalOcean (DO) - Spaces
 - Artisan command to upload content to CDN
 - Simple Facade to access CDN assets
 
@@ -38,7 +39,7 @@ This project has been forked from https://github.com/Vinelab/cdn. All credit for
 
 Require `publiux/laravelcdn` in your project:
 
-```bash 
+```bash
 composer require "publiux/laravelcdn:~2.0"
 ```
 
@@ -127,7 +128,7 @@ CDN_CloudFrontUrl=
 ```
 
 ##### Default CDN Provider
-For now, the only CDN provider available is AwsS3. This option cannot be set in '.env'.
+For now, the only CDN provider available is AwsS3. Although, as DO natively support the AWS API, you can utilise it by also providing the endpoint, please see the cdn.php config for more info. This option cannot be set in '.env'.
 
 ```php
 'default' => 'AwsS3',
@@ -139,9 +140,10 @@ For now, the only CDN provider available is AwsS3. This option cannot be set in 
 'aws' => [
 
     's3' => [
-    
+
         'version'   => 'latest',
         'region'    => '',
+        'endpoint'  => '', // For DO Spaces
 
         'buckets' => [
             'my-backup-bucket' => '*',
@@ -156,7 +158,7 @@ For now, the only CDN provider available is AwsS3. This option cannot be set in 
 'buckets' => [
 
     'my-default-bucket' => '*',
-    
+
     // 'js-bucket' => ['public/js'],
     // 'css-bucket' => ['public/css'],
     // ...
@@ -294,6 +296,9 @@ If you discover any security related issues, please email publiux@gmail.com inst
 The MIT License (MIT). Please see [License File](https://github.com/publiux/laravelcdn/blob/master/LICENSE) for more information.
 
 ## Changelog
+
+#### v1.0.4
+- Added DigitalOcean Spaces support
 
 #### v1.0.3
 - Fixed bug where schemeless Urls could not be used for CloudFront. Valid urls now begin with http, https, or simply '//'
