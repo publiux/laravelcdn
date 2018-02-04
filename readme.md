@@ -297,8 +297,20 @@ The MIT License (MIT). Please see [License File](https://github.com/publiux/lara
 
 ## Changelog
 
-#### v1.0.4
-- Added DigitalOcean Spaces support
+#### v2.0.4
+- Added API support for DigitalOcean Spaces
+
+#### v2.0.3
+- Added support for an upload folder prefix
+
+#### v2.0.2
+- Updated readme to detail instructions on Laravel <5.5 usage
+
+#### v2.0.1
+- Fixed typo in composer.json
+
+#### v2.0.0
+- Support for Laravel 5.5
 
 #### v1.0.3
 - Fixed bug where schemeless Urls could not be used for CloudFront. Valid urls now begin with http, https, or simply '//'
