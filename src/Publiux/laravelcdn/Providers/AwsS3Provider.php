@@ -199,8 +199,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
 
                     $this->s3_client->execute($command);
                 } catch (S3Exception $e) {
-                    $this->console->writeln('<fg=red>'.$e->getMessage().'</fg=red>');
-
+                    $this->console->writeln('<fg=red>Upload error: '.$e->getMessage().'</fg=red>');
                     return false;
                 }
             }
@@ -234,6 +233,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
                 )
             );
         } catch (\Exception $e) {
+            $this->console->writeln('<fg=red>Connection error: '.$e->getMessage().'</fg=red>');
             return false;
         }
 
@@ -347,8 +347,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
 
             $empty->delete();
         } catch (S3Exception $e) {
-            $this->console->writeln('<fg=red>'.$e->getMessage().'</fg=red>');
-
+            $this->console->writeln('<fg=red>Deletion error: '.$e->getMessage().'</fg=red>');
             return false;
         }
 

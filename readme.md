@@ -297,6 +297,9 @@ The MIT License (MIT). Please see [License File](https://github.com/publiux/lara
 
 ## Changelog
 
+#### v2.0.5
+- Added connection error reporting
+
 #### v2.0.4
 - Added API support for DigitalOcean Spaces
 
