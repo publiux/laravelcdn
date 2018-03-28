@@ -110,7 +110,7 @@ return [
                 | https://www.digitalocean.com/community/questions/how-to-use-digitalocean-spaces-with-the-aws-s3-sdks?answer=39594
                 |
                 */
-                'endpoint' => '',
+                'endpoint' => null,
 
                 /*
                 |--------------------------------------------------------------------------
