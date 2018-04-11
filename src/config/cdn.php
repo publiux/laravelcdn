@@ -91,10 +91,26 @@ return [
                 |--------------------------------------------------------------------------
                 |
                 | List of available regions:
-                | http://docs.aws.amazon.com/general/latest/gr/rande.html#awsconfig_region
+                | https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region
                 |
                 */
                 'region' => '',
+
+                /*
+                |--------------------------------------------------------------------------
+                | Endpoint to use
+                |--------------------------------------------------------------------------
+                |
+                | List of available endpoints for regions:
+                | https://docs.aws.amazon.com/general/latest/gr/rande.html#s3_region
+                |
+                | For DigitalOcean Spaces:
+                | This can be found in the settings panel on the cloud UI, further info:
+                | https://www.digitalocean.com/community/tutorials/an-introduction-to-digitalocean-spaces#creating-new-spaces
+                | https://www.digitalocean.com/community/questions/how-to-use-digitalocean-spaces-with-the-aws-s3-sdks?answer=39594
+                |
+                */
+                'endpoint' => null,
 
                 /*
                 |--------------------------------------------------------------------------
@@ -117,7 +133,7 @@ return [
                     //   'your-js-bucket-name-here'   =>  ['public/js'],
                     //   'your-css-bucket-name-here'  =>  ['public/css'],
                 ],
-                
+
                 /*
                 |--------------------------------------------------------------------------
                 | CDN Bucket Upload Folder Prefix
