@@ -7,6 +7,7 @@ use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
 use Illuminate\Support\Collection;
 use Publiux\laravelcdn\Contracts\CdnHelperInterface;
+use Publiux\laravelcdn\Contracts\FileUploadHandlerInterface;
 use Publiux\laravelcdn\Providers\Contracts\ProviderInterface;
 use Publiux\laravelcdn\Validators\Contracts\ProviderValidatorInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -184,7 +185,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
                         // the bucket name
                         'Bucket' => $this->getBucket(),
                         // the path of the file on the server (CDN)
-                        'Key' => $this->supplier['upload_folder'] . str_replace('\\', '/', $file->getPathName()),
+                        'Key' => $this->getUploadFolderForFile($file),
                         // the path of the path locally
                         'Body' => fopen($file->getRealPath(), 'r'),
                         // the permission of the file
@@ -212,6 +213,22 @@ class AwsS3Provider extends Provider implements ProviderInterface
         }
 
         return true;
+    }
+
+    private function getUploadFolderForFile($file){
+        $uploadFolder = $this->supplier['upload_folder'];
+        $class = str_replace("/", "", $uploadFolder);
+
+        if(class_exists($class)){
+            $instance = new $class;
+            if($instance instanceof FileUploadHandlerInterface){
+                $uploadFolder = $instance->getUploadPathForFile($file);
+            } else {
+                throw new \Exception("Class \"{$class}\" does not implement " . FileuploadHandlerInterface::class);
+            }
+        }
+
+        return $uploadFolder . str_replace('\\', '/', $file->getPathName());
     }
 
     /**
@@ -275,10 +292,14 @@ class AwsS3Provider extends Provider implements ProviderInterface
         }
 
         $assets->transform(function ($item, $key) use (&$filesOnAWS) {
-            $fileOnAWS = $filesOnAWS->get(str_replace('\\', '/', $item->getPathName()));
+            $path = $this->getUploadFolderForFile($item);
+            $fileOnAWS = $filesOnAWS->get($path);
+
+            // Decide if we want to compare the LastModified-meta-data or not
+            $compareExistingFilesByLastModified = (bool) config("cdn.providers.aws.s3.compare_existing_files_by_last_modified");
 
             //select to upload files that are different in size AND last modified time.
-            if (!($item->getMTime() === $fileOnAWS['LastModified']) && !($item->getSize() === $fileOnAWS['Size'])) {
+            if (!($item->getMTime() === $fileOnAWS['LastModified'] || $compareExistingFilesByLastModified === false) && !($item->getSize() === $fileOnAWS['Size'])) {
                 return $item;
             }
         });
