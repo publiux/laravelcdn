@@ -152,6 +152,7 @@ return [
                 |
                 */
                 'upload_folder' => env('AWS_CDN_ASSET_UPLOAD_FOLDER', ''),
+                'compare_existing_files_by_last_modified' => true,
 
                 /*
                 |--------------------------------------------------------------------------
