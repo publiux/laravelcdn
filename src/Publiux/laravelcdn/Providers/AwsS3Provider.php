@@ -28,6 +28,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
  * @property string  $acl
  * @property string  $cloudfront
  * @property string  $cloudfront_url
+ * @property string  $use_path_style_endpoint
  * @property string $http
  *
  * @author   Mahmoud Zalt <mahmoud@vinelab.com>
@@ -57,6 +58,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
                         'use' => false,
                         'cdn_url' => null,
                     ],
+                    'use_path_style_endpoint' => false
                 ],
             ],
         ],
@@ -141,7 +143,8 @@ class AwsS3Provider extends Provider implements ProviderInterface
             'cloudfront' => $this->default['providers']['aws']['s3']['cloudfront']['use'],
             'cloudfront_url' => $this->default['providers']['aws']['s3']['cloudfront']['cdn_url'],
             'http' => $this->default['providers']['aws']['s3']['http'],
-            'upload_folder' => $this->default['providers']['aws']['s3']['upload_folder']
+            'upload_folder' => $this->default['providers']['aws']['s3']['upload_folder'],
+            'use_path_style_endpoint' => $this->default['providers']['aws']['s3']['use_path_style_endpoint']
         ];
 
         // check if any required configuration is missed
@@ -228,7 +231,8 @@ class AwsS3Provider extends Provider implements ProviderInterface
                         'version' => $this->supplier['version'],
                         'region' => $this->supplier['region'],
                         'endpoint' => $this->supplier['endpoint'],
-                        'http' => $this->supplier['http']
+                        'http' => $this->supplier['http'],
+                        'use_path_style_endpoint' => $this->supplier['use_path_style_endpoint']
                     ]
                 )
             );
