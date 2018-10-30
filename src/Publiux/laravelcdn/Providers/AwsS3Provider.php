@@ -382,10 +382,14 @@ class AwsS3Provider extends Provider implements ProviderInterface
 
         if ($this->supplier['use_path_style_endpoint']) {
             $bucket = (!empty($bucket)) ? $bucket.'/' : '';
-            $port = (
-                ($url['scheme'] == 'https' && $url['port'] == 443) ||
-                ($url['scheme'] == 'http' && $url['port'] == 80)
-            ) ? '' : ':' . $url['port'];
+            if (isset($url['port'])) {
+                $port = (
+                    ($url['scheme'] == 'https' && $url['port'] == 443) ||
+                    ($url['scheme'] == 'http' && $url['port'] == 80)
+                ) ? '' : ':' . $url['port'];
+            } else {
+                $port = '';
+            }
             return $url['scheme'] . '://' .  $url['host'] . $port . '/' . $bucket . $path;
         }
 
