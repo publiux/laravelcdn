@@ -63,10 +63,6 @@ return [
     | Of course, examples of configuring each provider platform that is
     | supported by Laravel is shown below to make development simple.
     |
-    | Note: Credentials must be set in the .env file:
-    |         AWS_ACCESS_KEY_ID
-    |         AWS_SECRET_ACCESS_KEY
-    |
     */
     'providers' => [
 
@@ -180,6 +176,21 @@ return [
                 'cloudfront'    => [
                     'use'     => env('CDN_UseCloudFront', false),
                     'cdn_url' => env('CDN_CloudFrontUrl', ''),
+                ],
+
+                /*
+                |--------------------------------------------------------------------------
+                | Credentials for AWS S3 connection
+                |--------------------------------------------------------------------------
+                |
+                | Some AWS credentials are needed for making upload connection to S3 server.
+                | If these config lines commented AWS API tries to read configuration data
+                | from AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables.
+                |
+                */
+                'credentials' => [
+                    'key' => env('CDN_AWS_ACCESS_KEY_ID'),
+                    'secret' => env('AWS_SECRET_ACCESS_KEY')
                 ],
 
                 /*

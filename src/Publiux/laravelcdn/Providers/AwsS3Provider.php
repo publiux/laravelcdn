@@ -49,6 +49,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
                     'version' => null,
                     'region' => null,
                     'endpoint' => null,
+                    'credentials' => null,
                     'buckets' => null,
                     'upload_folder' => '',
                     'http' => null,
@@ -56,7 +57,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
                     'cloudfront' => [
                         'use' => false,
                         'cdn_url' => null,
-                    ],
+                    ]
                 ],
             ],
         ],
@@ -135,6 +136,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
             'threshold' => $this->default['threshold'],
             'version' => $this->default['providers']['aws']['s3']['version'],
             'region' => $this->default['providers']['aws']['s3']['region'],
+            'credentials' => $this->default['providers']['aws']['s3']['credentials'],
             'endpoint' => $this->default['providers']['aws']['s3']['endpoint'],
             'buckets' => $this->default['providers']['aws']['s3']['buckets'],
             'acl' => $this->default['providers']['aws']['s3']['acl'],
@@ -216,17 +218,18 @@ class AwsS3Provider extends Provider implements ProviderInterface
 
     /**
      * Create an S3 client instance
-     * (Note: it will read the credentials form the .env file).
      *
      * @return bool
      */
     public function connect()
     {
         try {
+            // Parsing credentials
             // Instantiate an S3 client
             $this->setS3Client(new S3Client([
                         'version' => $this->supplier['version'],
                         'region' => $this->supplier['region'],
+                        'credentials' => $this->supplier['credentials'],
                         'endpoint' => $this->supplier['endpoint'],
                         'http' => $this->supplier['http']
                     ]
