@@ -111,6 +111,15 @@ return [
                 |
                 */
                 'endpoint' => null,
+                
+                /*
+                 * -----------------------------------------------------------------------
+                 * Use path style endpoint
+                 * -----------------------------------------------------------------------
+                 *
+                 * This can be useful if we use with Minio or similar S3 compatible software
+                 */
+                'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
 
                 /*
                 |--------------------------------------------------------------------------
