@@ -253,4 +253,39 @@ return [
         'hidden'      => true,
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | File compression
+    |--------------------------------------------------------------------------
+    |
+    | Here is possible to specify files that should be compressed before uploading.
+    |
+    | S3 like services needs this to deliver content faster, because these services
+    | in most cases doesn't have build'in compression.
+    |
+    | Extensions defines what file extensions should be compressed. All of them needs to
+    | begin with a dot.
+    |
+    | Algorithm defines how to compress file. At current moment only 'gzip' and 'deflate'
+    | are supported. null value means that no compression should be used.
+    |
+    | Level defines how much data should be compressed used when compressing files.
+    | -1 means that default compression level should be used. Min - 0, max - 9.
+    |
+    */
+    'compression' => [
+        'extensions' => [
+            '.js',
+            '.css',
+            '.xml',
+            '.svg',
+            '.html',
+            '.htm',
+            '.txt',
+            '.md'
+        ],
+        'algorithm' => 'gzip',
+        'level' => 9
+    ],
+
 ];

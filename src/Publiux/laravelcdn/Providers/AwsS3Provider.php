@@ -6,10 +6,12 @@ use Aws\S3\BatchDelete;
 use Aws\S3\Exception\S3Exception;
 use Aws\S3\S3Client;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 use Publiux\laravelcdn\Contracts\CdnHelperInterface;
 use Publiux\laravelcdn\Providers\Contracts\ProviderInterface;
 use Publiux\laravelcdn\Validators\Contracts\ProviderValidatorInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Finder\SplFileInfo;
 
 /**
  * Class AwsS3Provider
@@ -29,6 +31,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
  * @property string  $cloudfront
  * @property string  $cloudfront_url
  * @property string $http
+ * @property array  $compression
  *
  * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
@@ -43,6 +46,11 @@ class AwsS3Provider extends Provider implements ProviderInterface
     protected $default = [
         'url' => null,
         'threshold' => 10,
+        'compression' => [
+            'extensions' => [],
+            'algorithm' => null,
+            'level' => 9
+        ],
         'providers' => [
             'aws' => [
                 's3' => [
@@ -141,7 +149,8 @@ class AwsS3Provider extends Provider implements ProviderInterface
             'cloudfront' => $this->default['providers']['aws']['s3']['cloudfront']['use'],
             'cloudfront_url' => $this->default['providers']['aws']['s3']['cloudfront']['cdn_url'],
             'http' => $this->default['providers']['aws']['s3']['http'],
-            'upload_folder' => $this->default['providers']['aws']['s3']['upload_folder']
+            'upload_folder' => $this->default['providers']['aws']['s3']['upload_folder'],
+            'compression' => $this->default['compression'],
         ];
 
         // check if any required configuration is missed
@@ -174,11 +183,18 @@ class AwsS3Provider extends Provider implements ProviderInterface
         $assets = $this->getFilesAlreadyOnBucket($assets);
 
         // upload each asset file to the CDN
-        if (count($assets) > 0) {
+        $count = count($assets);
+        if ($count > 0) {
             $this->console->writeln('<fg=yellow>Upload in progress......</fg=yellow>');
-            foreach ($assets as $file) {
+            $count--;
+            foreach ($assets as $i => $file) {
                 try {
-                    $this->console->writeln('<fg=cyan>'.'Uploading file path: '.$file->getRealpath().'</fg=cyan>');
+                    $needsCompression = $this->needCompress($file);
+                    $this->console->writeln(
+                        '<fg=magenta>' . str_pad( number_format (100 / $count * $i, 2), 6, ' ',STR_PAD_LEFT) . '% </fg=magenta>' .
+                        '<fg=cyan>Uploading file path: ' . $file->getRealpath() . '</fg=cyan>' .
+                        ($needsCompression ? ' <fg=green>Compressed</fg=green>' : '')
+                    );
                     $command = $this->s3_client->getCommand('putObject', [
 
                         // the bucket name
@@ -186,13 +202,15 @@ class AwsS3Provider extends Provider implements ProviderInterface
                         // the path of the file on the server (CDN)
                         'Key' => $this->supplier['upload_folder'] . str_replace('\\', '/', $file->getPathName()),
                         // the path of the path locally
-                        'Body' => fopen($file->getRealPath(), 'r'),
+                        'Body' => $this->getFileContent($file, $needsCompression),
                         // the permission of the file
 
                         'ACL' => $this->acl,
                         'CacheControl' => $this->default['providers']['aws']['s3']['cache-control'],
                         'Metadata' => $this->default['providers']['aws']['s3']['metadata'],
                         'Expires' => $this->default['providers']['aws']['s3']['expires'],
+                        'ContentType' => File::mimeType($file->getRealPath()),
+                        'ContentEncoding' => $needsCompression ? $this->compression['algorithm'] : 'identity',
                     ]);
 //                var_dump(get_class($command));exit();
 
@@ -416,5 +434,51 @@ class AwsS3Provider extends Provider implements ProviderInterface
     public function __get($attr)
     {
         return isset($this->supplier[$attr]) ? $this->supplier[$attr] : null;
+    }
+
+    /**
+     * Does file needs compression
+     *
+     * @param SplFileInfo $file File info
+     *
+     * @return bool
+     */
+    private function needCompress(SplFileInfo $file) {
+        return !empty($this->compression['algorithm']) &&
+            !empty($this->compression['extensions']) &&
+            in_array($this->compression['algorithm'], ['gzip', 'deflate']) &&
+            in_array('.' . $file->getExtension(), $this->compression['extensions']);
+    }
+
+    /**
+     * Read file content and compress
+     *
+     * @param SplFileInfo $file             File to read
+     * @param bool        $needsCompress    Need file to compress
+     *
+     * @return resource|string
+     */
+    private function getFileContent(SplFileInfo $file, $needsCompress) {
+        if ($needsCompress) {
+            switch ($this->compression['algorithm']) {
+                case 'gzip':
+                    return gzcompress(
+                        file_get_contents(
+                            $file->getRealPath()
+                        ),
+                        (int)$this->compression['level'],
+                        ZLIB_ENCODING_GZIP
+                    );
+                case 'deflate':
+                    return gzcompress(
+                        file_get_contents(
+                            $file->getRealPath()
+                        ),
+                        (int)$this->compression['level'],
+                        ZLIB_ENCODING_DEFLATE
+                    );
+            }
+        }
+        return fopen($file->getRealPath(), 'r');
     }
 }
