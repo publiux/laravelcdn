@@ -190,7 +190,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
                 try {
                     $needsCompression = $this->needCompress($file);
                     $this->console->writeln(
-                        '<fg=magenta>' . str_pad( number_format (($count / ($i + 1) ) * 100, 2), 6, ' ',STR_PAD_LEFT) . '% </fg=magenta>' .
+                        '<fg=magenta>' . str_pad( number_format (100 / $count * ($i + 1), 2), 6, ' ',STR_PAD_LEFT) . '% </fg=magenta>' .
                         '<fg=cyan>Uploading file path: ' . $file->getRealpath() . '</fg=cyan>' .
                         ($needsCompression ? ' <fg=green>Compressed</fg=green>' : '')
                     );
