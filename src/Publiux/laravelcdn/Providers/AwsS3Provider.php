@@ -208,7 +208,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
                         'CacheControl' => $this->default['providers']['aws']['s3']['cache-control'],
                         'Metadata' => $this->default['providers']['aws']['s3']['metadata'],
                         'Expires' => $this->default['providers']['aws']['s3']['expires'],
-                        'ContentType' => File::mimeType($file->getRealPath()),
+                        'ContentType' => $this->getMimetype($file),
                         'ContentEncoding' => $needsCompression ? $this->compression['algorithm'] : 'identity',
                     ]);
 //                var_dump(get_class($command));exit();
@@ -480,4 +480,20 @@ class AwsS3Provider extends Provider implements ProviderInterface
         }
         return fopen($file->getRealPath(), 'r');
     }
+
+    /**
+     * Get mimetype from config or from system
+     *
+     * @param SplFileInfo $file File info to get mimetype
+     *
+     * @return false|string
+     */
+    protected function getMimetype(SplFileInfo $file) {
+        $ext = '.' . $file->getExtension();
+        if (is_array($this->compression['mimetypes']) && isset($this->compression['mimetypes'][$ext])) {
+            return $this->compression['mimetypes'][$ext];
+        }
+        return File::mimeType($file->getRealPath());
+    }
+
 }
