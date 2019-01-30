@@ -32,6 +32,7 @@ use Symfony\Component\Finder\SplFileInfo;
  * @property string  $cloudfront_url
  * @property string $http
  * @property array  $compression
+ * @property array  $mimetypes
  *
  * @author   Mahmoud Zalt <mahmoud@vinelab.com>
  */
@@ -50,6 +51,8 @@ class AwsS3Provider extends Provider implements ProviderInterface
             'extensions' => [],
             'algorithm' => null,
             'level' => 9
+        ],
+        'mimetypes' => [
         ],
         'providers' => [
             'aws' => [
@@ -75,7 +78,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
      *
      * @var array
      */
-    protected $rules = ['version', 'region', 'key', 'secret', 'buckets', 'url'];
+    protected $rules = ['version', 'region', 'key', 'secret', 'buckets', 'url', 'mimetypes'];
 
     /**
      * this array holds the parsed configuration to be used across the class.
@@ -151,6 +154,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
             'http' => $this->default['providers']['aws']['s3']['http'],
             'upload_folder' => $this->default['providers']['aws']['s3']['upload_folder'],
             'compression' => $this->default['compression'],
+            'mimetypes' => $this->default['mimetypes'],
         ];
 
         // check if any required configuration is missed
@@ -490,8 +494,8 @@ class AwsS3Provider extends Provider implements ProviderInterface
      */
     protected function getMimetype(SplFileInfo $file) {
         $ext = '.' . $file->getExtension();
-        if (is_array($this->compression['mimetypes']) && isset($this->compression['mimetypes'][$ext])) {
-            return $this->compression['mimetypes'][$ext];
+        if (isset($this->mimetypes[$ext])) {
+            return $this->mimetypes[$ext];
         }
         return File::mimeType($file->getRealPath());
     }

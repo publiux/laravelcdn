@@ -255,6 +255,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Forced mimetypes by file extensions
+    |--------------------------------------------------------------------------
+    |
+    | Mimetypes are collection with file extensions as key and mimetypes as values. It used
+    | when we need to force that some extensions should have some special file types otherwise
+    | OS detected mimetypes will be used.
+    |
+    */
+    'mimetypes' => [
+        '.css' => 'text/css'
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | File compression
     |--------------------------------------------------------------------------
     |
@@ -272,10 +286,6 @@ return [
     | Level defines how much data should be compressed used when compressing files.
     | -1 means that default compression level should be used. Min - 0, max - 9.
     |
-    | Mimetypes are collection with file extensions as key and mimetypes as values. It used
-    | when we need to force that some extensions should have some special file types otherwise
-    | OS detected mimetypes will be used.
-    |
     */
     'compression' => [
         'extensions' => [
@@ -289,10 +299,7 @@ return [
             '.md'
         ],
         'algorithm' => 'gzip',
-        'level' => 9,
-        'mimetypes' => [
-            '.css' => 'text/css'
-        ]
+        'level' => 9
     ],
 
 ];
