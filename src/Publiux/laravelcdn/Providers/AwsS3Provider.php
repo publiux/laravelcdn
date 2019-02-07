@@ -190,13 +190,14 @@ class AwsS3Provider extends Provider implements ProviderInterface
         $count = count($assets);
         if ($count > 0) {
             $this->console->writeln('<fg=yellow>Upload in progress......</fg=yellow>');
-            foreach ($assets as $i => $file) {
+            $o = 0;
+            foreach ($assets as $file) {
                 try {
                     $needsCompression = $this->needCompress($file);
                     $this->console->writeln(
-                        '<fg=magenta>' . str_pad( number_format (100 / $count * ($i + 1), 2), 6, ' ',STR_PAD_LEFT) . '% </fg=magenta>' .
+                        '<fg=magenta>' . str_pad( number_format (100 / $count * ++$o, 2), 6, ' ',STR_PAD_LEFT) . '% </fg=magenta>' .
                         '<fg=cyan>Uploading file path: ' . $file->getRealpath() . '</fg=cyan>' .
-                        ($needsCompression ? ' <fg=green>Compressed</fg=green>' : '')
+                        ($needsCompression ? PHP_EOL. "        <fg=green>Compressed</fg=green>" : '')
                     );
                     $command = $this->s3_client->getCommand('putObject', [
 
