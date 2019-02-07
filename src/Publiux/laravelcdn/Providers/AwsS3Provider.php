@@ -171,7 +171,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
         // user terminal message
         $this->console->writeln('<fg=yellow>Comparing local files and bucket...</fg=yellow>');
 
-        $assets = $this->getFilesAlreadyOnBucket($assets);
+        $assets = $this->getFilesToUpload($assets);
 
         // upload each asset file to the CDN
         if (count($assets) > 0) {
@@ -249,10 +249,12 @@ class AwsS3Provider extends Provider implements ProviderInterface
     }
 
     /**
+     * Get files to upload
+     *
      * @param $assets
      * @return mixed
      */
-    private function getFilesAlreadyOnBucket($assets)
+    private function getFilesToUpload($assets)
     {
         $filesOnAWS = new Collection([]);
 
@@ -268,23 +270,29 @@ class AwsS3Provider extends Provider implements ProviderInterface
         foreach ($files['Contents'] as $file) {
             $a = [
                 'Key' => $file['Key'],
+                'Hash' => trim($file['ETag'], '"'),
                 "LastModified" => $file['LastModified']->getTimestamp(),
                 'Size' => $file['Size']
             ];
             $filesOnAWS->put($file['Key'], $a);
         }
 
-        $assets->transform(function ($item, $key) use (&$filesOnAWS) {
-            $fileOnAWS = $filesOnAWS->get(str_replace('\\', '/', $item->getPathName()));
-
-            //select to upload files that are different in size AND last modified time.
-            if (!($item->getMTime() === $fileOnAWS['LastModified']) && !($item->getSize() === $fileOnAWS['Size'])) {
-                return $item;
+        $assets = $assets->reject(function ($item) use ($filesOnAWS) {
+            $key = str_replace('\\', '/', $item->getPathName());
+            if (!$filesOnAWS->has($key)) {
+                return false;
             }
-        });
 
-        $assets = $assets->reject(function ($item) {
-            return $item === null;
+            $fileOnAWS = $filesOnAWS->get($key);
+
+            if (
+                ($item->getMTime() === $fileOnAWS['LastModified']) &&
+                ($item->getSize() === $fileOnAWS['Size'])
+            ) {
+                return false;
+            }
+
+            return !$this->calculateEtag($item->getPathName(), -8, $fileOnAWS['Hash']);
         });
 
         return $assets;
@@ -407,6 +415,85 @@ class AwsS3Provider extends Provider implements ProviderInterface
     {
         return rtrim($this->provider_url, '/') . '/';
     }
+    
+    /**
+     * Calculate Amazon AWS ETag used on the S3 service
+     *
+     * @see https://stackoverflow.com/a/36072294/1762839
+     * @author TheStoryCoder (https://stackoverflow.com/users/2404541/thestorycoder)
+     *
+     * @param string $filename path to file to check
+     * @param int $chunksize chunk size in Megabytes
+     * @param bool|string $expected verify calculated etag against this specified
+     *                              etag and return true or false instead if you make
+     *                              chunksize negative (eg. -8 instead of 8) the function
+     *                              will guess the chunksize by checking all possible sizes
+     *                              given the number of parts mentioned in $expected
+     *
+     * @return bool|string          ETag (string) or boolean true|false if $expected is set
+     */
+    protected function calculateEtag($filename, $chunksize, $expected = false) {
+        if ($chunksize < 0) {
+            $do_guess = true;
+            $chunksize = 0 - $chunksize;
+        } else {
+            $do_guess = false;
+        }
+
+        $chunkbytes = $chunksize*1024*1024;
+        $filesize = filesize($filename);
+        if ($filesize < $chunkbytes && (!$expected || !preg_match("/^\\w{32}-\\w+$/", $expected))) {
+            $return = md5_file($filename);
+            if ($expected) {
+                $expected = strtolower($expected);
+                return ($expected === $return ? true : false);
+            } else {
+                return $return;
+            }
+        } else {
+            $md5s = array();
+            $handle = fopen($filename, 'rb');
+            if ($handle === false) {
+                return false;
+            }
+            while (!feof($handle)) {
+                $buffer = fread($handle, $chunkbytes);
+                $md5s[] = md5($buffer);
+                unset($buffer);
+            }
+            fclose($handle);
+
+            $concat = '';
+            foreach ($md5s as $indx => $md5) {
+                $concat .= hex2bin($md5);
+            }
+            $return = md5($concat) .'-'. count($md5s);
+            if ($expected) {
+                $expected = strtolower($expected);
+                $matches = ($expected === $return ? true : false);
+                if ($matches || $do_guess == false || strlen($expected) == 32) {
+                    return $matches;
+                } else {
+                    // Guess the chunk size
+                    preg_match("/-(\\d+)$/", $expected, $match);
+                    $parts = $match[1];
+                    $min_chunk = ceil($filesize / $parts /1024/1024);
+                    $max_chunk =  floor($filesize / ($parts-1) /1024/1024);
+                    $found_match = false;
+                    for ($i = $min_chunk; $i <= $max_chunk; $i++) {
+                        if ($this->calculateEtag($filename, $i) === $expected) {
+                            $found_match = true;
+                            break;
+                        }
+                    }
+                    return $found_match;
+                }
+            } else {
+                return $return;
+            }
+        }
+    }
+
 
     /**
      * @param $attr
