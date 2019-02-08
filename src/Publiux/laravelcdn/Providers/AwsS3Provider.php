@@ -256,46 +256,42 @@ class AwsS3Provider extends Provider implements ProviderInterface
      */
     private function getFilesToUpload($assets)
     {
-        $filesOnAWS = new Collection([]);
+        $assets_dict = new Collection();
+        foreach ($assets as $item) {
+            $assets_dict->put(str_replace('\\', '/', $item->getPathName()), $item);
+        }
 
-        $files = $this->s3_client->listObjects([
-            'Bucket' => $this->getBucket(),
-        ]);
+        try {
+            $results = $this->s3_client->getPaginator('ListObjects', [
+                'Bucket' => $this->getBucket(),
+            ]);
 
-        if (!$files['Contents']) {
-            //no files on bucket. lets upload everything found.
+            foreach ($results as $result) {
+                foreach ($result['Contents'] as $file) {
+                    $key = $file['Key'];
+                    if (!$assets_dict->has($key)) {
+                        continue;
+                    }
+                    $item = $assets_dict->get($key);
+
+                    if (
+                        !$this->calculateEtag(
+                            $item->getPathName(),
+                            -8,
+                            trim($file['ETag'], '"')
+                        )
+                    ) {
+                        continue;
+                    }
+
+                    $assets_dict->forget($key);
+                }
+            }
+
+            return new Collection($assets_dict->values());
+        } catch (S3Exception $e) {
             return $assets;
         }
-
-        foreach ($files['Contents'] as $file) {
-            $a = [
-                'Key' => $file['Key'],
-                'Hash' => trim($file['ETag'], '"'),
-                "LastModified" => $file['LastModified']->getTimestamp(),
-                'Size' => $file['Size']
-            ];
-            $filesOnAWS->put($file['Key'], $a);
-        }
-
-        $assets = $assets->reject(function ($item) use ($filesOnAWS) {
-            $key = str_replace('\\', '/', $item->getPathName());
-            if (!$filesOnAWS->has($key)) {
-                return false;
-            }
-
-            $fileOnAWS = $filesOnAWS->get($key);
-
-            if (
-                ($item->getMTime() === $fileOnAWS['LastModified']) &&
-                ($item->getSize() === $fileOnAWS['Size'])
-            ) {
-                return false;
-            }
-
-            return !$this->calculateEtag($item->getPathName(), -8, $fileOnAWS['Hash']);
-        });
-
-        return $assets;
     }
 
     /**
