@@ -69,7 +69,7 @@ class CdnTest extends TestCase
 
         $result = $this->cdn->push();
 
-        assertEquals($result, true);
+        $this->assertEquals($result, true);
     }
 
     /**
@@ -153,7 +153,7 @@ class CdnTest extends TestCase
             ->andReturn(__DIR__.'/AwsS3ProviderTest.php');
 
         // partial mock
-        $p_aws_s3_provider = M::mock('\Publiux\laravelcdn\Providers\AwsS3Provider[connect]', 
+        $p_aws_s3_provider = M::mock('\Publiux\laravelcdn\Providers\AwsS3Provider[connect]',
         [
             $m_console,
             $m_validator,
@@ -185,6 +185,6 @@ class CdnTest extends TestCase
 
         $result = $cdn->push();
 
-        assertEquals($result, true);
+        $this->assertEquals($result, true);
     }
 }

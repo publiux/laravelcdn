@@ -95,7 +95,7 @@ class AwsS3ProviderTest extends TestCase
 
         $awsS3Provider_obj = $this->p_awsS3Provider->init($configurations);
 
-        assertInstanceOf('Publiux\laravelcdn\Providers\AwsS3Provider', $awsS3Provider_obj);
+        $this->assertInstanceOf('Publiux\laravelcdn\Providers\AwsS3Provider', $awsS3Provider_obj);
     }
 
     public function testUploadingAssets()
@@ -131,7 +131,7 @@ class AwsS3ProviderTest extends TestCase
 
         $result = $this->p_awsS3Provider->upload(new Collection([$this->m_spl_file]));
 
-        assertEquals(true, $result);
+        $this->assertEquals(true, $result);
     }
 
     public function testUrlGenerator()
@@ -167,7 +167,7 @@ class AwsS3ProviderTest extends TestCase
 
         $result = $this->p_awsS3Provider->urlGenerator($this->path);
 
-        assertEquals($this->cdn_url, $result);
+        $this->assertEquals($this->cdn_url, $result);
     }
 
     public function testEmptyUrlGenerator()
@@ -203,6 +203,6 @@ class AwsS3ProviderTest extends TestCase
 
         $result = $this->p_awsS3Provider->urlGenerator($this->path);
 
-        assertEquals($this->path_url, $result);
+        $this->assertEquals($this->path_url, $result);
     }
 }
