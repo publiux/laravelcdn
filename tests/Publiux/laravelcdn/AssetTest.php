@@ -37,7 +37,7 @@ class AssetTest extends TestCase
         ]);
 
         // check the returned object is of type Publiux\laravelcdn\Asset
-        assertEquals($result, $this->asset);
+        $this->assertEquals($result, $this->asset);
     }
 
     public function testIncludedDirectories()
@@ -52,7 +52,7 @@ class AssetTest extends TestCase
 
         $result = $this->asset->getIncludedDirectories();
 
-        assertEquals($result, $dir);
+        $this->assertEquals($result, $dir);
     }
 
     public function testIncludedExtensions()
@@ -67,7 +67,7 @@ class AssetTest extends TestCase
 
         $result = $this->asset->getIncludedExtensions();
 
-        assertEquals($result, $ext);
+        $this->assertEquals($result, $ext);
     }
 
     public function testIncludedPatterns()
@@ -82,7 +82,7 @@ class AssetTest extends TestCase
 
         $result = $this->asset->getIncludedPatterns();
 
-        assertEquals($result, $pat);
+        $this->assertEquals($result, $pat);
     }
 
     public function testExcludedDirectories()
@@ -97,7 +97,7 @@ class AssetTest extends TestCase
 
         $result = $this->asset->getExcludedDirectories();
 
-        assertEquals($result, $dir);
+        $this->assertEquals($result, $dir);
     }
 
     public function testExcludedFiles()
@@ -112,7 +112,7 @@ class AssetTest extends TestCase
 
         $result = $this->asset->getExcludedFiles();
 
-        assertEquals($result, $dir);
+        $this->assertEquals($result, $dir);
     }
 
     public function testExcludedExtensions()
@@ -127,7 +127,7 @@ class AssetTest extends TestCase
 
         $result = $this->asset->getExcludedExtensions();
 
-        assertEquals($result, $dir);
+        $this->assertEquals($result, $dir);
     }
 
     public function testExcludedPatterns()
@@ -142,7 +142,7 @@ class AssetTest extends TestCase
 
         $result = $this->asset->getExcludedPatterns();
 
-        assertEquals($result, $dir);
+        $this->assertEquals($result, $dir);
     }
 
     public function testExcludedHidden()
@@ -157,6 +157,6 @@ class AssetTest extends TestCase
 
         $result = $this->asset->getExcludeHidden();
 
-        assertEquals($result, $bol);
+        $this->assertEquals($result, $bol);
     }
 }

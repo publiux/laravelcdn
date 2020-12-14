@@ -43,9 +43,9 @@ class FinderTest extends TestCase
 
         $result = $finder->read($asset_holder);
 
-        assertInstanceOf('Symfony\Component\Finder\SplFileInfo', $result->first());
+        $this->assertInstanceOf('Symfony\Component\Finder\SplFileInfo', $result->first());
 
-        assertEquals($result, new Collection($result->all()));
+        $this->assertEquals($result, new Collection($result->all()));
     }
 
     /**

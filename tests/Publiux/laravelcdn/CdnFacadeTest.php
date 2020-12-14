@@ -87,7 +87,7 @@ class CdnFacadeTest extends TestCase
 
         $result = $this->facade->asset($this->asset_path);
         // assert is calling the url generator
-        assertEquals($result, $this->asset_url);
+        $this->assertEquals($result, $this->asset_url);
     }
 
     public function testPathIsCallingUrlGenerator()
@@ -98,7 +98,7 @@ class CdnFacadeTest extends TestCase
 
         $result = $this->facade->asset($this->path_path);
         // assert is calling the url generator
-        assertEquals($result, $this->asset_url);
+        $this->assertEquals($result, $this->asset_url);
     }
 
     /**
