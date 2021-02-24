@@ -277,6 +277,10 @@ class AwsS3Provider extends Provider implements ProviderInterface
         $assets->transform(function ($item, $key) use (&$filesOnAWS) {
             $fileOnAWS = $filesOnAWS->get(str_replace('\\', '/', $this->upload_folder.$item->getPathName()));
 
+            if (!$fileOnAWS) {
+                return $item;
+            }
+            
             //select to upload files that are different in size AND last modified time.
             if (!($item->getMTime() > (int) $fileOnAWS['LastModified']) || !($item->getSize() === (int) $fileOnAWS['Size'])) {
                 return $item;
