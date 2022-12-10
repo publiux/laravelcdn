@@ -249,45 +249,39 @@ class AwsS3Provider extends Provider implements ProviderInterface
     }
 
     /**
-     * @param $assets
+     * @param  Collection $assets
      * @return mixed
      */
     private function getFilesAlreadyOnBucket($assets)
     {
         $filesOnAWS = new Collection([]);
 
-        $files = $this->s3_client->listObjects([
-            'Bucket' => $this->getBucket(),
-        ]);
+        $params = ['Bucket' => $this->getBucket()];
+        do {
+            $files = $this->s3_client->listObjectsV2($params);
+            $params['ContinuationToken'] = $files->get('NextContinuationToken');
 
-        if (!$files['Contents']) {
+            foreach ($files->get('Contents') as $file) {
+                $a = [
+                    'Key' => $file['Key'],
+                    "LastModified" => $file['LastModified']->getTimestamp(),
+                    'Size' => intval($file['Size'])
+                ];
+                $filesOnAWS->put($file['Key'], $a);
+            }
+        } while ($files->get('IsTruncated'));
+
+        if ($filesOnAWS->isEmpty()) {
             //no files on bucket. lets upload everything found.
             return $assets;
         }
 
-        foreach ($files['Contents'] as $file) {
-            $a = [
-                'Key' => $file['Key'],
-                "LastModified" => $file['LastModified']->getTimestamp(),
-                'Size' => $file['Size']
-            ];
-            $filesOnAWS->put($file['Key'], $a);
-        }
-
-        $assets->transform(function ($item, $key) use (&$filesOnAWS) {
-            $fileOnAWS = $filesOnAWS->get(str_replace('\\', '/', $item->getPathName()));
+        return $assets->filter(function ($file) use (&$filesOnAWS) {
+            $fileOnAWS = $filesOnAWS->get(str_replace('\\', '/', $file->getPathName()));
 
             //select to upload files that are different in size AND last modified time.
-            if (!($item->getMTime() === $fileOnAWS['LastModified']) && !($item->getSize() === $fileOnAWS['Size'])) {
-                return $item;
-            }
+            return $file->getMTime() !== $fileOnAWS['LastModified'] && $file->getSize() !== $fileOnAWS['Size'];
         });
-
-        $assets = $assets->reject(function ($item) {
-            return $item === null;
-        });
-
-        return $assets;
     }
 
     /**
