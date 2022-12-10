@@ -26,7 +26,7 @@
       "symfony/finder": "^5",
       "symfony/console": "^5",
       "aws/aws-sdk-php": "~3.2",
-      "laravel/framework": "^8|^9",
+      "laravel/framework": "^8|^9"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0",
