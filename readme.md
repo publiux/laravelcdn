@@ -15,12 +15,11 @@ And then it allows them to switch between the local and the online version of th
 ###### Fork From [Vinelab/cdn](https://github.com/Vinelab/cdn)
 This project has been forked from https://github.com/Vinelab/cdn. All credit for the original work goes there.
 
-###### Fork From [publiux/laravelcdn](https://github.com/publiux/laravelcdn)
-This project has been forked from https://github.com/publiux/laravelcdn. All credit for the original work goes there.
-
 #### Laravel Support
-- This fork supports Laravel 5.2 up to an including Laravel 5.5 (`master`).
-- Laravel 5.5 is supported, as is package auto-discovery.
+- This fork supports Laravel 8 and up.
+- Package auto-discovery is supported.
+- If you need to use Laravel versions below 8, please use version ~3 of this package.
+- Laravel version 8 and above should be using version ~4 of this package.
 
 ## Highlights
 
@@ -43,7 +42,7 @@ This project has been forked from https://github.com/publiux/laravelcdn. All cre
 Require `publiux/laravelcdn` in your project:
 
 ```bash
-composer require "publiux/laravelcdn:~2.0"
+composer require "publiux/laravelcdn:~4.0"
 ```
 
 *If you are using Laravel 5.4 or below, you need to register the service provider:*
