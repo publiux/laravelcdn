@@ -194,7 +194,6 @@ class AwsS3Provider extends Provider implements ProviderInterface
                         'Metadata' => $this->default['providers']['aws']['s3']['metadata'],
                         'Expires' => $this->default['providers']['aws']['s3']['expires'],
                     ]);
-//                var_dump(get_class($command));exit();
 
 
                     $this->s3_client->execute($command);
