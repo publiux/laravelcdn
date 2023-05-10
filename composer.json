@@ -23,8 +23,8 @@
       "php": ">=7.2.5",
       "illuminate/support": "^8|^9",
       "illuminate/config": "^8|^9",
-      "symfony/finder": "^5",
-      "symfony/console": "^5",
+      "symfony/finder": "^6",
+      "symfony/console": "^6",
       "aws/aws-sdk-php": "~3.2",
       "laravel/framework": "^8|^9"
     },
