@@ -260,7 +260,7 @@ class AwsS3Provider extends Provider implements ProviderInterface
             $files = $this->s3_client->listObjectsV2($params);
             $params['ContinuationToken'] = $files->get('NextContinuationToken');
 
-            foreach ($files->get('Contents') as $file) {
+            foreach ($files->get('Contents')?:[] as $file) {
                 $a = [
                     'Key' => $file['Key'],
                     "LastModified" => $file['LastModified']->getTimestamp(),
